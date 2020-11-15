@@ -30,7 +30,7 @@ public class PenTool implements EnabledTool{
     }
 
     public void startDrawLine(MouseEvent mouseEvent) {
-        System.out.println("start draw line");
+//        System.out.println("start draw line");
         path = new Path();
         path.setStrokeWidth(2);
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));
@@ -42,7 +42,7 @@ public class PenTool implements EnabledTool{
     }
 
     public void endDrawLine(MouseEvent mouseEvent) {
-        System.out.println("end draw line");
+//        System.out.println("end draw line");
         path = null;
     }
 }
