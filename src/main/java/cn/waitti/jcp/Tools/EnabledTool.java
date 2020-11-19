@@ -4,3 +4,4 @@ public interface EnabledTool {
     public void activate();
     public void deactivate();
 }
+
