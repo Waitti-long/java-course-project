@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="pane" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.waitti.jcp.Controller">
+<BorderPane fx:id="pane" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.waitti.jcp.Controller">
    <left>
       <TilePane prefColumns="2" prefHeight="300.0" prefWidth="100.0" tileAlignment="TOP_CENTER">
          <children>
@@ -19,7 +20,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onMouseReleased="#choosePen" prefHeight="32.0" prefWidth="46.0" styleClass="btn">
+            <Button mnemonicParsing="false" onMouseReleased="#choosePen" prefHeight="32.0" prefWidth="46.0">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
