@@ -1,32 +1,37 @@
 package cn.waitti.jcp.Tools;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 public class PenTool implements EnabledTool{
-    Pane pane;
+    AnchorPane cPane;
     Path path = null;
-    static PenTool instance = null;
 
-    PenTool(Pane pane){
-        this.pane = pane;
+    PenTool(AnchorPane cPane){
+        this.cPane = cPane;
     }
 
     @Override
     public void activate() {
-        pane.setOnMousePressed(this::startDrawLine);
-        pane.setOnMouseDragged(this::drawLine);
-        pane.setOnMouseReleased(this::endDrawLine);
+        cPane.setOnMousePressed(this::startDrawLine);
+        cPane.setOnMouseDragged(this::drawLine);
+        cPane.setOnMouseReleased(this::endDrawLine);
+
     }
 
     @Override
     public void deactivate() {
-        pane.setOnMousePressed(null);
-        pane.setOnMouseDragged(null);
-        pane.setOnMouseReleased(null);
+        cPane.setOnMousePressed(null);
+        cPane.setOnMouseDragged(null);
+        cPane.setOnMouseReleased(null);
     }
 
     public void startDrawLine(MouseEvent mouseEvent) {
@@ -34,7 +39,7 @@ public class PenTool implements EnabledTool{
         path = new Path();
         path.setStrokeWidth(2);
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));
-        pane.getChildren().add(path);
+        cPane.getChildren().add(path);
     }
 
     public void drawLine(MouseEvent mouseEvent) {
