@@ -12,23 +12,22 @@ import javafx.scene.shape.*;
 
 public class Controller {
     public BorderPane pane;
-    public AnchorPane cPane;
-    public Canvas canvas;
+    public Pane cPane;
     public Group group;
 
-    public void initialize()throws Exception {
+    public void initialize() throws Exception {
         ToolPicker.activate(MouseTool.class);
     }
 
-    public void choosePen(MouseEvent mouseEvent) throws Exception{
-        ToolPicker.activateWithArgs(PenTool.class, new Class[]{Canvas.class},canvas);
+    public void choosePen(MouseEvent mouseEvent) throws Exception {
+        ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class}, cPane);
     }
 
-    public void chooseMouse(MouseEvent mouseEvent) throws Exception{
+    public void chooseMouse(MouseEvent mouseEvent) throws Exception {
         ToolPicker.activate(MouseTool.class);
     }
 
-    public void chooseRec(MouseEvent mouseEvent) throws Exception{
-        ToolPicker.activateWithArgs(RecTool.class,new Class[]{Canvas.class},canvas);
+    public void chooseRec(MouseEvent mouseEvent) throws Exception {
+        ToolPicker.activateWithArgs(RecTool.class, new Class[]{});
     }
 }
