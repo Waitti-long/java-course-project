@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class ToolPicker {
-    private static HashMap<Class<? extends EnabledTool>, EnabledTool> store = new HashMap<>();
+    private static final HashMap<Class<? extends EnabledTool>, EnabledTool> store = new HashMap<>();
     private static EnabledTool currentTool = null;
 
     public static void activateWithArgs(Class<? extends EnabledTool> clazz, Class[] classes, Object... args) throws Exception {
