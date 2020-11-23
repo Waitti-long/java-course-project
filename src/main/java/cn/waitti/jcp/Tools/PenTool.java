@@ -45,6 +45,7 @@ public class PenTool implements EnabledTool{
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));*/
         gc=canvas.getGraphicsContext2D();
         gc.moveTo(mouseEvent.getX(), mouseEvent.getY());
+        System.out.println(gc.toString());
         //group.getChildren().add(path);
     }
 
