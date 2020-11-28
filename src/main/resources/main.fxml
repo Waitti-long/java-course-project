@@ -1,90 +1,236 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import javafx.scene.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 
-<BorderPane fx:id="pane" maxHeight="409.6" maxWidth="632.0" prefHeight="409.6" prefWidth="632.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.waitti.jcp.Controller">
-   <left>
-      <TilePane prefColumns="2" prefHeight="300.0" prefWidth="100.0" tileAlignment="TOP_CENTER">
-         <children>
-            <Button fx:id="MouseButton" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/mouse.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false" onMouseReleased="#choosePen" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/pen.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <TilePane.margin>
-                  <Insets left="2.0" />
-               </TilePane.margin>
-            </Button>
-            <Button fx:id="Rec" layoutX="11.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseRec" prefHeight="32.0" prefWidth="46.0" styleClass="btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/mouse.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="MouseButton111" layoutX="60.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/mouse.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="MouseButton1111" layoutX="60.0" layoutY="74.0" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/mouse.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="MouseButton11111" layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="btn">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@icons/mouse.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <BorderPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </BorderPane.margin>
-      </TilePane>
-   </left>
-   <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </top>
-   <center>
-      <Pane fx:id="cPane" style="-fx-background-color: white;" />
-   </center>
-   <right>
-      <VBox prefHeight="300.0" prefWidth="11.0" BorderPane.alignment="CENTER" />
-   </right>
-   <bottom>
-      <VBox prefHeight="9.0" prefWidth="511.0" BorderPane.alignment="CENTER" />
-   </bottom>
+<BorderPane fx:id="pane" maxHeight="409.6" maxWidth="632.0" prefHeight="409.6" prefWidth="632.0" style="-fx-background-color: #c0c0c0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.waitti.jcp.Controller">
+    <left>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <TilePane alignment="CENTER_LEFT" prefColumns="2" prefHeight="300.0" prefWidth="100.0">
+                    <BorderPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </BorderPane.margin>
+                    <Button fx:id="MouseButton" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@icons/mouse.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button mnemonicParsing="false" onMouseReleased="#choosePen" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@icons/pen.png" />
+                            </ImageView>
+                        </graphic>
+                        <TilePane.margin>
+                            <Insets left="2.0" />
+                        </TilePane.margin>
+                    </Button>
+                    <Button fx:id="Rec" layoutX="11.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseRec" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/Rectangle.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="MouseButton111" layoutX="60.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseEllipse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/Ellipse.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="MouseButton1111" layoutX="60.0" layoutY="74.0" mnemonicParsing="false" onMouseReleased="#chooseCircle" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/Circle.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="MouseButton11111" layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onMouseReleased="#chooseLine" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/Line.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="MouseButton1" mnemonicParsing="false" onMouseReleased="#chooseText" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/text.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </TilePane>
+                <Separator />
+                <TilePane alignment="TOP_CENTER" prefColumns="1" prefHeight="283.0" prefWidth="100.0">
+                    <children>
+                        <ColorPicker fx:id="colorPicker" TilePane.alignment="CENTER">
+                            <TilePane.margin>
+                                <Insets bottom="5.0" top="5.0" />
+                            </TilePane.margin>
+                     <value>
+                        <Color />
+                     </value>
+                        </ColorPicker>
+                        <ComboBox fx:id="fillBox" prefWidth="100.0" promptText="是否填充" TilePane.alignment="CENTER">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Fill" />
+                                    <String fx:value="Stroke" />
+                                </FXCollections>
+                            </items>
+                     <TilePane.margin>
+                        <Insets left="2.5" right="2.5" />
+                     </TilePane.margin>
+                        </ComboBox>
+                  <ComboBox fx:id="fontBox" layoutX="12.0" layoutY="48.0" prefWidth="100.0" promptText="字体">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Arial" />
+                           <String fx:value="Arial Black" />
+                            <String fx:value="Arial Narrow" />
+                            <String fx:value="Bahnschrift" />
+                            <String fx:value="Book Antiqua" />
+                            <String fx:value="Calibri" />
+                            <String fx:value="Calibri Light" />
+                            <String fx:value="Cambria" />
+                            <String fx:value="Candara" />
+                            <String fx:value="Candara Light" />
+                            <String fx:value="Century" />
+                            <String fx:value="Consolas" />
+                            <String fx:value="Corbel" />
+                            <String fx:value="Dubai" />
+                            <String fx:value="Ebrima" />
+                            <String fx:value="Gabriola" />
+                            <String fx:value="Georgia" />
+                            <String fx:value="Impact" />
+                            <String fx:value="Lucida Bright" />
+                            <String fx:value="Microsoft Himalaya" />
+                            <String fx:value="Microsoft JhengHei" />
+                            <String fx:value="Microsoft JhengHei Light" />
+                            <String fx:value="Microsoft Sans Serif" />
+                            <String fx:value="Microsoft Tai Le" />
+                            <String fx:value="Microsoft YaHei UI" />
+                            <String fx:value="Microsoft YaHei UI Light" />
+                            <String fx:value="Times New Roman" />
+                            <String fx:value="Tahoma" />
+                            <String fx:value="FangSong" />
+                            <String fx:value="KaiTi" />
+                            <String fx:value="NSimSun" />
+                            <String fx:value="SimHei" />
+                        </FXCollections>
+                     </items>
+                  </ComboBox>
+                  <ComboBox fx:id="sizeBox" layoutX="12.0" layoutY="48.0" prefWidth="100.0" promptText="文字大小">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <Integer fx:value="2" />
+                            <Integer fx:value="4" />
+                            <Integer fx:value="6" />
+                            <Integer fx:value="8" />
+                            <Integer fx:value="10" />
+                            <Integer fx:value="12" />
+                            <Integer fx:value="14" />
+                            <Integer fx:value="15" />
+                            <Integer fx:value="16" />
+                            <Integer fx:value="17" />
+                            <Integer fx:value="18" />
+                            <Integer fx:value="19" />
+                            <Integer fx:value="20" />
+                            <Integer fx:value="21" />
+                            <Integer fx:value="22" />
+                            <Integer fx:value="23" />
+                            <Integer fx:value="24" />
+                            <Integer fx:value="25" />
+                            <Integer fx:value="26" />
+                            <Integer fx:value="27" />
+                            <Integer fx:value="28" />
+                            <Integer fx:value="29" />
+                            <Integer fx:value="30" />
+                            <Integer fx:value="31" />
+                            <Integer fx:value="32" />
+                            <Integer fx:value="33" />
+                            <Integer fx:value="34" />
+                            <Integer fx:value="38" />
+                            <Integer fx:value="40" />
+                            <Integer fx:value="44" />
+                            <Integer fx:value="48" />
+                            <Integer fx:value="52" />
+                            <Integer fx:value="56" />
+                            <Integer fx:value="60" />
+                        </FXCollections>
+                     </items>
+                  </ComboBox>
+                  <ToolBar prefHeight="17.0" style="-fx-background-color: #c0c0c0;">
+                     <items>
+                        <CheckBox fx:id="boldCheck" mnemonicParsing="false" text="加粗" />
+                        <CheckBox fx:id="italicCheck" mnemonicParsing="false" text="斜体" />
+                     </items>
+                     <padding>
+                        <Insets left="2.5" right="2.5" />
+                     </padding>
+                  </ToolBar>
+                    </children>
+                </TilePane>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </VBox>
+    </left>
+    <top>
+        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="666.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="Clear" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+        </HBox>
+    </top>
+    <center>
+        <Pane fx:id="cPane" style="-fx-background-color: white;" />
+    </center>
+    <right>
+        <VBox prefHeight="300.0" prefWidth="11.0" BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <VBox prefHeight="9.0" prefWidth="511.0" BorderPane.alignment="CENTER" />
+    </bottom>
 </BorderPane>

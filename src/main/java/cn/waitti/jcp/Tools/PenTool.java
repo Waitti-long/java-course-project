@@ -4,6 +4,7 @@ import com.sun.javafx.geom.Vec2d;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -15,9 +16,10 @@ import javafx.scene.shape.*;
 public class PenTool implements EnabledTool {
     Pane pane;
     Path path = null;
-
-    PenTool(Pane pane) {
+    ColorPicker colorPicker;
+    PenTool(Pane pane,ColorPicker colorPicker) {
         this.pane = pane;
+        this.colorPicker= colorPicker;
     }
 
     @Override
@@ -55,7 +57,8 @@ public class PenTool implements EnabledTool {
                     p.getElements().set(0, dist);
                 }
         );
-        path.setStrokeWidth(2);
+        path.setStroke(colorPicker.getValue());
+        path.setStrokeWidth(1);
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));
         pane.getChildren().add(path);
 //        gc=pane.getGraphicsContext2D();
