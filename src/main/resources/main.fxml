@@ -210,6 +210,7 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
+                        <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="Undo" />
                                 <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="Clear" />
                             </items>
                         </Menu>
