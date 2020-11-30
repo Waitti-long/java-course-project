@@ -58,6 +58,7 @@ public class RecTool implements EnabledTool {
                         p.setY(event.getY());
                     }
                 });
+        rectangle.setOnMouseReleased(e -> Revocation.push());
     }
 
     @Override

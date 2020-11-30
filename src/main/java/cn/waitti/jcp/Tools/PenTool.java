@@ -50,6 +50,7 @@ public class PenTool implements EnabledTool {
                     p.getElements().set(0, dist);
                 }
         );
+        path.setOnMouseReleased(e -> Revocation.push());
         path.setStroke(colorPicker.getValue());
         path.setStrokeWidth(1);
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));

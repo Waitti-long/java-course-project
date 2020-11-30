@@ -79,6 +79,7 @@ public class TextTool implements EnabledTool {
                             p.setY(event.getY());
                         }
                     });
+            text.setOnMouseReleased(e -> Revocation.push());
             text.setX(mouseEvent.getX());
             text.setY(mouseEvent.getY());
             pane.getChildren().add(text);

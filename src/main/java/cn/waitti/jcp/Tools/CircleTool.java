@@ -55,9 +55,7 @@ public class CircleTool implements EnabledTool {
                     }
                 });
         circle.setOnMouseReleased(
-                event -> {
-                    Revocation.push();
-                }
+                event -> Revocation.push()
         );
     }
 

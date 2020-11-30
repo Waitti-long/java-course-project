@@ -54,6 +54,7 @@ public class LineTool implements EnabledTool {
                         p.setEndY(event.getY() + y2 - y1);
                     }
                 });
+        line.setOnMouseReleased(e -> Revocation.push());
     }
 
     @Override

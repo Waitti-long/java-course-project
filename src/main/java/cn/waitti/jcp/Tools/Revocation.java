@@ -18,7 +18,6 @@ public class Revocation {
     }
 
     public static void push() {
-        // TODO：deep copy
         try{
             ArrayList<Node> arr = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {

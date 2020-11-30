@@ -58,6 +58,7 @@ public class EllipseTool implements EnabledTool {
                 el.setCenterY(e.getY());
             }
         });
+        ellipse.setOnMouseReleased(e -> Revocation.push());
     }
 
     @Override
