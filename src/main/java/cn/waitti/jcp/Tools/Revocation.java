@@ -41,4 +41,8 @@ public class Revocation {
             controller.cPane.getChildren().addAll(stack.peek());
         }
     }
+
+    public static Controller getController(){
+        return Revocation.controller;
+    }
 }

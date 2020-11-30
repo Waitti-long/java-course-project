@@ -25,20 +25,6 @@ public class EllipseTool implements EnabledTool {
     List<Ellipse> ellipseList = new ArrayList<>();
 
     @Override
-    public void activate() {
-        pane.setOnMousePressed(this::start);
-        pane.setOnMouseDragged(null);
-        pane.setOnMouseReleased(this::end);
-    }
-
-    @Override
-    public void deactivate() {
-        pane.setOnMousePressed(null);
-        pane.setOnMouseDragged(null);
-        pane.setOnMouseReleased(null);
-    }
-
-    @Override
     public void start(MouseEvent mouseEvent) {
         x1 = mouseEvent.getX();
         y1 = mouseEvent.getY();
