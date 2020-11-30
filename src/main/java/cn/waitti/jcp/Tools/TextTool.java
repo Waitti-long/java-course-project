@@ -90,6 +90,6 @@ public class TextTool implements EnabledTool {
 
     @Override
     public void end(MouseEvent event) {
-        Revocation.push();
+            Revocation.push();
     }
 }

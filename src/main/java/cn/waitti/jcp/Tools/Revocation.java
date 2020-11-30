@@ -11,6 +11,7 @@ import java.util.Stack;
 public class Revocation {
     static Controller controller;
     static Stack<ArrayList<Node>> stack = new Stack<>();
+    static int count = 0;
 
     public static void init(Controller controller) {
         Revocation.controller = controller;
@@ -18,6 +19,7 @@ public class Revocation {
     }
 
     public static void push() {
+        System.out.println("push "+count++);
         try{
             ArrayList<Node> arr = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {
