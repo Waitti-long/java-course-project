@@ -1,6 +1,5 @@
 package cn.waitti.jcp.Tools;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class ToolPicker {

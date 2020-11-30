@@ -1,18 +1,9 @@
 package cn.waitti.jcp.Tools;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -32,7 +23,21 @@ public class RecTool implements EnabledTool {
     Rectangle rectangle = new Rectangle();
     List<Rectangle> rectangleList = new ArrayList<>();
 
-    public void startDrawRec(MouseEvent mouseEvent) {
+
+    @Override
+    public void activate() {
+        pane.setOnMousePressed(this::start);
+        pane.setOnMouseReleased(this::end);
+    }
+
+    @Override
+    public void deactivate() {
+        pane.setOnMousePressed(null);
+        pane.setOnMouseReleased(null);
+    }
+
+    @Override
+    public void start(MouseEvent mouseEvent) {
         x1 = mouseEvent.getX();
         y1 = mouseEvent.getY();
         if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
@@ -55,7 +60,8 @@ public class RecTool implements EnabledTool {
                 });
     }
 
-    public void endDrawRec(MouseEvent mouseEvent) {
+    @Override
+    public void end(MouseEvent mouseEvent) {
         x2 = mouseEvent.getX();
         y2 = mouseEvent.getY();
         width = x2 - x1;
@@ -74,18 +80,7 @@ public class RecTool implements EnabledTool {
 
         rectangleList.add(rectangle);
         rectangle = new Rectangle();
-    }
-
-    @Override
-    public void activate() {
-        pane.setOnMousePressed(this::startDrawRec);
-        pane.setOnMouseReleased(this::endDrawRec);
-    }
-
-    @Override
-    public void deactivate() {
-        pane.setOnMousePressed(null);
-        pane.setOnMouseReleased(null);
+        Revocation.push();
     }
     /*@Override
     public void activate() {
