@@ -2,6 +2,9 @@ package cn.waitti.jcp.Tools;
 
 import cn.waitti.jcp.Controller;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import org.apache.commons.beanutils.BeanUtils;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -16,7 +19,17 @@ public class Revocation {
 
     public static void push() {
         // TODO：deep copy
-        stack.push(new ArrayList<>(controller.cPane.getChildren()));
+        try{
+            ArrayList<Node> arr = new ArrayList<>();
+            for (Node child : controller.cPane.getChildren()) {
+                Node node = child.getClass().getConstructor().newInstance();
+                BeanUtils.copyProperties(node, child);
+                arr.add(node);
+            }
+            stack.push(arr);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

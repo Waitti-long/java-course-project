@@ -54,6 +54,11 @@ public class CircleTool implements EnabledTool {
                         p.setCenterY(event.getY());
                     }
                 });
+        circle.setOnMouseReleased(
+                event -> {
+                    Revocation.push();
+                }
+        );
     }
 
     @Override
