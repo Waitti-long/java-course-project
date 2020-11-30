@@ -2,6 +2,7 @@ package cn.waitti.jcp.Tools;
 
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -50,6 +51,16 @@ public class SaveTool implements EnabledTool{
 
     @Override
     public void deactivate() {
+
+    }
+
+    @Override
+    public void start(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void end(MouseEvent mouseEvent) {
 
     }
 }
