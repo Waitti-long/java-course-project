@@ -76,8 +76,6 @@ public class EllipseTool implements EnabledTool {
         }
         ellipse.setRadiusX(width);
         ellipse.setRadiusY(height);
-        ellipse.setCenterX(ellipse.getCenterX() + width);
-        ellipse.setCenterY(ellipse.getCenterY() + height);
         pane.getChildren().add(ellipse);
         ellipseList.add(ellipse);
         ellipse = new Ellipse();
