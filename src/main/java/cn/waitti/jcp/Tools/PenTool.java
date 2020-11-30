@@ -1,16 +1,9 @@
 package cn.waitti.jcp.Tools;
 
-import com.sun.javafx.geom.Vec2d;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
 public class PenTool implements EnabledTool {
@@ -24,9 +17,9 @@ public class PenTool implements EnabledTool {
 
     @Override
     public void activate() {
-        pane.setOnMousePressed(this::startDrawLine);
-        pane.setOnMouseDragged(this::drawLine);
-        pane.setOnMouseReleased(this::endDrawLine);
+        pane.setOnMousePressed(this::start);
+        pane.setOnMouseDragged(this::among);
+        pane.setOnMouseReleased(this::end);
 
     }
 
@@ -37,8 +30,8 @@ public class PenTool implements EnabledTool {
         pane.setOnMouseReleased(null);
     }
 
-    public void startDrawLine(MouseEvent mouseEvent) {
-//        System.out.println("start draw line");
+    @Override
+    public void start(MouseEvent mouseEvent) {
         if (!pane.contains(mouseEvent.getX(), mouseEvent.getY()))
             return;
         path = new Path();
@@ -57,26 +50,23 @@ public class PenTool implements EnabledTool {
                     p.getElements().set(0, dist);
                 }
         );
+        path.setOnMouseReleased(e -> Revocation.push());
         path.setStroke(colorPicker.getValue());
         path.setStrokeWidth(1);
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));
         pane.getChildren().add(path);
-//        gc=pane.getGraphicsContext2D();
-//        gc.moveTo(mouseEvent.getX(), mouseEvent.getY());
-        //group.getChildren().add(path);
     }
 
-    public void drawLine(MouseEvent mouseEvent) {
+    @Override
+    public void among(MouseEvent mouseEvent) {
         if (path == null || !pane.contains(mouseEvent.getX(), mouseEvent.getY()))
             return;
         path.getElements().add(new LineTo(mouseEvent.getX(), mouseEvent.getY()));
-//        gc.lineTo(mouseEvent.getX(), mouseEvent.getY());
-//        gc.stroke();
     }
 
-    public void endDrawLine(MouseEvent mouseEvent) {
-//        System.out.println("end draw line");
+    @Override
+    public void end(MouseEvent event) {
         path = null;
-//        gc=null;
+        Revocation.push();
     }
 }

@@ -1,7 +1,7 @@
 package cn.waitti.jcp.Tools;
 
-public interface EnabledTool {
-    public void activate();
-    public void deactivate();
+public interface EnabledTool extends Tool{
+    void activate();
+    void deactivate();
 }
 
