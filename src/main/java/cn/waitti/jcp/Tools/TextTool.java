@@ -35,16 +35,6 @@ public class TextTool implements EnabledTool {
     }
 
     @Override
-    public void activate() {
-        pane.setOnMousePressed(this::start);
-    }
-
-    @Override
-    public void deactivate() {
-        pane.setOnMousePressed(null);
-    }
-
-    @Override
     public void start(MouseEvent mouseEvent) {
         TextInputDialog inputDialog = new TextInputDialog();
         inputDialog.setTitle("Input Text Dialog");

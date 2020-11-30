@@ -16,21 +16,6 @@ public class PenTool implements EnabledTool {
     }
 
     @Override
-    public void activate() {
-        pane.setOnMousePressed(this::start);
-        pane.setOnMouseDragged(this::among);
-        pane.setOnMouseReleased(this::end);
-
-    }
-
-    @Override
-    public void deactivate() {
-        pane.setOnMousePressed(null);
-        pane.setOnMouseDragged(null);
-        pane.setOnMouseReleased(null);
-    }
-
-    @Override
     public void start(MouseEvent mouseEvent) {
         if (!pane.contains(mouseEvent.getX(), mouseEvent.getY()))
             return;

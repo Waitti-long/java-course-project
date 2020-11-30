@@ -24,18 +24,6 @@ public class LineTool implements EnabledTool {
     }
 
     @Override
-    public void activate() {
-        pane.setOnMousePressed(this::start);
-        pane.setOnMouseReleased(this::end);
-    }
-
-    @Override
-    public void deactivate() {
-        pane.setOnMousePressed(null);
-        pane.setOnMouseReleased(null);
-    }
-
-    @Override
     public void start(MouseEvent mouseEvent) {
         line.setStartX(mouseEvent.getX());
         line.setStartY(mouseEvent.getY());
