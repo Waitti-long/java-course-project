@@ -31,12 +31,10 @@ public class SaveTool implements EnabledTool{
         );
         File file=fileChooser.showSaveDialog(stage);
         WritableImage writableImage= cPane.snapshot(new SnapshotParameters(),null);
-        String type=fileChooser.getSelectedExtensionFilter().getDescription();
-        System.out.println(type);
         if(file!=null){
             try{
+                String type=fileChooser.getSelectedExtensionFilter().getDescription();
                 ImageIO.write(SwingFXUtils.fromFXImage(writableImage,null),type,file);
-                System.out.println("Save");
                 file=null;
                 fileChooser=new FileChooser();
             } catch (IOException e) {

@@ -53,7 +53,7 @@ public class EllipseTool implements EnabledTool {
         ellipse.setCenterY(y1);
         ellipse.setOnMouseDragged(e -> {
             Ellipse el = (Ellipse) e.getSource();
-            if (pane.contains(e.getX(), e.getY())) {
+            if (pane.contains(e.getX(), e.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
                 el.setCenterX(e.getX());
                 el.setCenterY(e.getY());
             }

@@ -43,7 +43,7 @@ public class LineTool implements EnabledTool {
         line.setOnMouseDragged(
                 event -> {
                     Line p = (Line) event.getSource();
-                    if (pane.contains(event.getX(), event.getY())) {
+                    if (pane.contains(event.getX(), event.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
                         x1 = p.getStartX();
                         y1 = p.getStartY();
                         x2 = p.getEndX();

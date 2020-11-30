@@ -19,13 +19,13 @@ public class Revocation {
     }
 
     public static void push() {
-        System.out.println("push "+count++);
         try{
             ArrayList<Node> arr = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {
                 Node node = child.getClass().getConstructor().newInstance();
                 BeanUtils.copyProperties(node, child);
                 arr.add(node);
+                System.out.println("push "+count++);
             }
             stack.push(arr);
         }catch (Exception e){

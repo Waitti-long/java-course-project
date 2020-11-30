@@ -49,7 +49,7 @@ public class CircleTool implements EnabledTool {
         circle.setOnMouseDragged(
                 event -> {
                     Circle p = (Circle) event.getSource();
-                    if (pane.contains(event.getX(), event.getY())) {
+                    if (pane.contains(event.getX(), event.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
                         p.setCenterX(event.getX());
                         p.setCenterY(event.getY());
                     }

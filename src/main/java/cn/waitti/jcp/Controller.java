@@ -1,6 +1,7 @@
 package cn.waitti.jcp;
 
 import cn.waitti.jcp.Tools.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.control.CheckBox;
@@ -26,6 +27,8 @@ public class Controller {
     public CheckBox boldCheck;
     public CheckBox italicCheck;
     public MenuItem FileSaver;
+    public MenuItem FileClose;
+    public MenuItem Undo;
 
     public void initialize() throws Exception {
         ToolPicker.activate(MouseTool.class);
@@ -65,5 +68,13 @@ public class Controller {
 
     public void chooseSave(ActionEvent mouseEvent)throws Exception{
         ToolPicker.activateWithArgs(SaveTool.class, new Class[]{BorderPane.class,Pane.class}, pane,cPane);
+    }
+
+    public void chooseClose(ActionEvent actionEvent)throws Exception{
+        Platform.exit();
+    }
+
+    public void chooseUndo(ActionEvent actionEvent)throws Exception{
+        Revocation.pop();
     }
 }
