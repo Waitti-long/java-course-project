@@ -1,6 +1,8 @@
 package cn.waitti.jcp;
 
+import cn.waitti.jcp.Serialize.Serializer;
 import cn.waitti.jcp.Tools.Revocation;
+import com.sun.javafx.fxml.FXMLLoaderHelper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 public class Main extends Application {
@@ -30,6 +35,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("java-course-project");
         primaryStage.show();
-        Revocation.init(loader.getController());
+        Controller controller = loader.getController();
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> Serializer.serialize(controller.cPane));
+        Revocation.init(controller);
     }
 }
