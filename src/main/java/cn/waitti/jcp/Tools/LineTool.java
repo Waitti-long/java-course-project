@@ -14,13 +14,15 @@ public class LineTool implements EnabledTool {
     Pane pane;
     ColorPicker colorPicker;
     ComboBox fillBox;
+    ComboBox sizeBox;
     double x1, x2, y1, y2;
     List<Line> lineList = new ArrayList<>();
 
-    LineTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox) {
+    LineTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
         this.pane = pane;
+        this.sizeBox=sizeBox;
     }
 
     @Override
@@ -28,6 +30,10 @@ public class LineTool implements EnabledTool {
         line.setStartX(mouseEvent.getX());
         line.setStartY(mouseEvent.getY());
         line.setStroke(colorPicker.getValue());
+        if(sizeBox.getValue()==null)
+            line.setStrokeWidth(1);
+        else
+            line.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
         line.setOnMouseDragged(
                 event -> {
                     Line p = (Line) event.getSource();
@@ -42,6 +48,16 @@ public class LineTool implements EnabledTool {
                         p.setEndY(event.getY() + y2 - y1);
                     }
                 });
+        line.setOnMousePressed(event -> {
+            Line p=(Line) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                p.setStroke(colorPicker.getValue());
+                if(sizeBox.getValue()==null)
+                    p.setStrokeWidth(1);
+                else
+                    p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+            }
+        });
         line.setOnMouseReleased(e -> Revocation.push());
     }
 

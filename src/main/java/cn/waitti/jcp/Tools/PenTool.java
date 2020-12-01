@@ -2,6 +2,7 @@ package cn.waitti.jcp.Tools;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
@@ -10,9 +11,11 @@ public class PenTool implements EnabledTool {
     Pane pane;
     Path path = null;
     ColorPicker colorPicker;
-    PenTool(Pane pane,ColorPicker colorPicker) {
+    ComboBox sizeBox;
+    PenTool(Pane pane,ColorPicker colorPicker,ComboBox sizeBox) {
         this.pane = pane;
         this.colorPicker= colorPicker;
+        this.sizeBox=sizeBox;
     }
 
     @Override
@@ -37,9 +40,22 @@ public class PenTool implements EnabledTool {
                     }
                 }
         );
+        path.setOnMousePressed(event -> {
+            Path p = (Path) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                p.setStroke(colorPicker.getValue());
+                if(sizeBox.getValue()==null)
+                    p.setStrokeWidth(1);
+                else
+                    p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+            }
+        });
         path.setOnMouseReleased(e -> Revocation.push());
         path.setStroke(colorPicker.getValue());
-        path.setStrokeWidth(1);
+        if(sizeBox.getValue()==null)
+            path.setStrokeWidth(1);
+        else
+            path.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
         path.getElements().add(new MoveTo(mouseEvent.getX(), mouseEvent.getY()));
         pane.getChildren().add(path);
     }

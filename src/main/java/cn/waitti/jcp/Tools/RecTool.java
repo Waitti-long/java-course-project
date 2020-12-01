@@ -14,10 +14,12 @@ public class RecTool implements EnabledTool {
     public double x1, x2, y1, y2, width, height;
     public ColorPicker colorPicker;
     public ComboBox fillBox;
-    RecTool(Pane cPane,ColorPicker colorPicker,ComboBox fillBox) {
+    public ComboBox sizeBox;
+    RecTool(Pane cPane,ColorPicker colorPicker,ComboBox fillBox,ComboBox sizeBox) {
         this.pane = cPane;
         this.colorPicker=colorPicker;
         this.fillBox=fillBox;
+        this.sizeBox=sizeBox;
     }
 
     Rectangle rectangle = new Rectangle();
@@ -34,6 +36,10 @@ public class RecTool implements EnabledTool {
         }
         else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
             rectangle.setStroke(colorPicker.getValue());
+            if(sizeBox.getValue()==null)
+                rectangle.setStrokeWidth(1);
+            else
+                rectangle.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             rectangle.setFill(null);
         }
         rectangle.setX(x1);
@@ -46,6 +52,23 @@ public class RecTool implements EnabledTool {
                         p.setY(event.getY());
                     }
                 });
+        rectangle.setOnMousePressed(event -> {
+            Rectangle p = (Rectangle) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
+                    p.setFill(colorPicker.getValue());
+                    p.setStroke(null);
+                }
+                else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
+                    p.setStroke(colorPicker.getValue());
+                    if(sizeBox.getValue()==null)
+                        p.setStrokeWidth(1);
+                    else
+                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    p.setFill(null);
+                }
+            }
+        });
         rectangle.setOnMouseReleased(e -> Revocation.push());
     }
 

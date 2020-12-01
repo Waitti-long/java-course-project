@@ -3,19 +3,14 @@ package cn.waitti.jcp;
 import cn.waitti.jcp.Tools.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.LineTo;
 
-import javax.sound.sampled.Line;
-import javax.tools.Tool;
 
 public class Controller {
     public BorderPane pane;
@@ -35,7 +30,7 @@ public class Controller {
     }
 
     public void choosePen(MouseEvent mouseEvent) throws Exception {
-        ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class, ColorPicker.class}, cPane, colorPicker);
+        ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class, ColorPicker.class,ComboBox.class}, cPane, colorPicker,sizeBox);
     }
 
     public void chooseMouse(MouseEvent mouseEvent) throws Exception {
@@ -43,11 +38,11 @@ public class Controller {
     }
 
     public void chooseRec(MouseEvent mouseEvent) throws Exception {
-        ToolPicker.activateWithArgs(RecTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, cPane, colorPicker, fillBox);
+        ToolPicker.activateWithArgs(RecTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class,ComboBox.class}, cPane, colorPicker, fillBox,sizeBox);
     }
 
     public void chooseEllipse(MouseEvent mouseEvent) throws Exception {
-        ToolPicker.activateWithArgs(EllipseTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, cPane, colorPicker, fillBox);
+        ToolPicker.activateWithArgs(EllipseTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class,ComboBox.class}, cPane, colorPicker, fillBox,sizeBox);
     }
 
     public void chooseClear(ActionEvent mouseEvent) throws Exception {
@@ -55,11 +50,11 @@ public class Controller {
     }
 
     public void chooseCircle(MouseEvent mouseEvent) throws Exception {
-        ToolPicker.activateWithArgs(CircleTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, cPane, colorPicker, fillBox);
+        ToolPicker.activateWithArgs(CircleTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class,ComboBox.class}, cPane, colorPicker, fillBox,sizeBox);
     }
 
     public void chooseLine(MouseEvent mouseEvent) throws Exception {
-        ToolPicker.activateWithArgs(LineTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, cPane, colorPicker, fillBox);
+        ToolPicker.activateWithArgs(LineTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class,ComboBox.class}, cPane, colorPicker, fillBox,sizeBox);
     }
 
     public void chooseText(MouseEvent mouseEvent) throws Exception {
@@ -76,5 +71,9 @@ public class Controller {
 
     public void chooseUndo(ActionEvent actionEvent)throws Exception{
         Revocation.pop();
+    }
+
+    public void chooseModify(MouseEvent mouseEvent)throws Exception{
+        ToolPicker.activate(ModifyTool.class);
     }
 }

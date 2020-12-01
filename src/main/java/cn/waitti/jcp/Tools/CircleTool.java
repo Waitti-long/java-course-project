@@ -16,13 +16,15 @@ public class CircleTool implements EnabledTool {
     Pane pane;
     ColorPicker colorPicker;
     ComboBox fillBox;
+    ComboBox sizeBox;
     double x1, y1, x2, y2;
     List<Circle> circleList = new ArrayList<>();
 
-    CircleTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox) {
+    CircleTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
         this.pane = pane;
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
+        this.sizeBox=sizeBox;
     }
 
 
@@ -35,6 +37,10 @@ public class CircleTool implements EnabledTool {
             circle.setStroke(null);
         } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
             circle.setStroke(colorPicker.getValue());
+            if(sizeBox.getValue()==null)
+                circle.setStrokeWidth(1);
+            else
+                circle.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             circle.setFill(null);
         }
         circle.setOnMouseDragged(
@@ -45,6 +51,22 @@ public class CircleTool implements EnabledTool {
                         p.setCenterY(event.getY());
                     }
                 });
+        circle.setOnMousePressed(event -> {
+            Circle p = (Circle) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
+                    p.setFill(colorPicker.getValue());
+                    p.setStroke(null);
+                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
+                    p.setStroke(colorPicker.getValue());
+                    if(sizeBox.getValue()==null)
+                        p.setStrokeWidth(1);
+                    else
+                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    p.setFill(null);
+                }
+            }
+        });
         circle.setOnMouseReleased(
                 event -> Revocation.push()
         );

@@ -1,5 +1,7 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Controller;
+
 public interface EnabledTool extends Tool{
     default void activate() {
         Revocation.getController().cPane.setOnMousePressed(this::start);

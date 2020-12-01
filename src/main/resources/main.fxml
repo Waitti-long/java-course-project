@@ -17,7 +17,7 @@
                     <BorderPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </BorderPane.margin>
-                    <Button fx:id="MouseButton" mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button mnemonicParsing="false" onMouseReleased="#chooseMouse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                                 <Image url="@icons/mouse.png" />
@@ -34,7 +34,7 @@
                             <Insets left="2.0" />
                         </TilePane.margin>
                     </Button>
-                    <Button fx:id="Rec" layoutX="11.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseRec" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button layoutX="11.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseRec" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -43,7 +43,7 @@
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button fx:id="MouseButton111" layoutX="60.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseEllipse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button layoutX="60.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseEllipse" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -52,7 +52,7 @@
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button fx:id="MouseButton1111" layoutX="60.0" layoutY="74.0" mnemonicParsing="false" onMouseReleased="#chooseCircle" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button layoutX="60.0" layoutY="74.0" mnemonicParsing="false" onMouseReleased="#chooseCircle" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -61,7 +61,7 @@
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button fx:id="MouseButton11111" layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onMouseReleased="#chooseLine" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onMouseReleased="#chooseLine" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -70,7 +70,7 @@
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button fx:id="MouseButton1" mnemonicParsing="false" onMouseReleased="#chooseText" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                    <Button mnemonicParsing="false" onMouseReleased="#chooseText" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -79,6 +79,15 @@
                             </ImageView>
                         </graphic>
                     </Button>
+               <Button layoutX="11.0" layoutY="138.0" mnemonicParsing="false" onMouseReleased="#chooseModify" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
+                  <graphic>
+                     <ImageView fitHeight="24.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@icons/modify.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
                 </TilePane>
                 <Separator />
                 <TilePane alignment="TOP_CENTER" prefColumns="1" prefHeight="283.0" prefWidth="100.0">
