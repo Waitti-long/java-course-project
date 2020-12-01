@@ -22,17 +22,19 @@ public class PenTool implements EnabledTool {
         path = new Path();
         path.setOnMouseDragged(
                 event -> {
-                    Path p = (Path) event.getSource();
-                    ObservableList<PathElement> elements = p.getElements();
-                    MoveTo origin = (MoveTo) elements.get(0);
-                    MoveTo dist = new MoveTo(event.getX(), event.getY());
-                    double offsetX = dist.getX() - origin.getX();
-                    double offsetY = dist.getY() - origin.getY();
-                    for (int i = 1; i < elements.size(); i++) {
-                        LineTo lineTo = (LineTo) elements.get(i);
-                        elements.set(i, new LineTo(lineTo.getX() + offsetX, lineTo.getY() + offsetY));
+                    if (ToolPicker.getCurrentTool() instanceof MouseTool) {
+                        Path p = (Path) event.getSource();
+                        ObservableList<PathElement> elements = p.getElements();
+                        MoveTo origin = (MoveTo) elements.get(0);
+                        MoveTo dist = new MoveTo(event.getX(), event.getY());
+                        double offsetX = dist.getX() - origin.getX();
+                        double offsetY = dist.getY() - origin.getY();
+                        for (int i = 1; i < elements.size(); i++) {
+                            LineTo lineTo = (LineTo) elements.get(i);
+                            elements.set(i, new LineTo(lineTo.getX() + offsetX, lineTo.getY() + offsetY));
+                        }
+                        p.getElements().set(0, dist);
                     }
-                    p.getElements().set(0, dist);
                 }
         );
         path.setOnMouseReleased(e -> Revocation.push());

@@ -20,7 +20,6 @@ public class Revocation {
     }
 
     public static void push() {
-        System.out.println("push "+count++);
         try{
             ArrayList<Node> arr = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {
@@ -30,6 +29,7 @@ public class Revocation {
                     ((Path)node).getElements().addAll(((Path) child).getElements());
                 }
                 arr.add(node);
+                System.out.println("push "+count++);
             }
             stack.push(arr);
         }catch (Exception e){

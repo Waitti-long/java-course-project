@@ -64,7 +64,7 @@ public class TextTool implements EnabledTool {
             text.setOnMouseDragged(
                     event -> {
                         Text p = (Text) event.getSource();
-                        if (pane.contains(event.getX(), event.getY())) {
+                        if (pane.contains(event.getX(), event.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
                             p.setX(event.getX());
                             p.setY(event.getY());
                         }

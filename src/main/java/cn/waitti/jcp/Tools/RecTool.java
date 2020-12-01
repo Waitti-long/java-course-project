@@ -41,7 +41,7 @@ public class RecTool implements EnabledTool {
         rectangle.setOnMouseDragged(
                 event -> {
                     Rectangle p = (Rectangle) event.getSource();
-                    if(pane.contains(event.getX(),event.getY())) {
+                    if(pane.contains(event.getX(),event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
                         p.setX(event.getX());
                         p.setY(event.getY());
                     }

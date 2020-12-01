@@ -5,6 +5,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
@@ -204,13 +205,20 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                         <MenuItem mnemonicParsing="false" text="Open" />
-                        <MenuItem fx:id="FileSaver" mnemonicParsing="false" onAction="#chooseSave" text="Save" />
-                                <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem fx:id="FileSaver" mnemonicParsing="false" onAction="#chooseSave" text="Save">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="FileClose" mnemonicParsing="false" onAction="#chooseClose" text="Close" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                        <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="Undo" />
+                        <MenuItem fx:id="Undo" mnemonicParsing="false" onAction="#chooseUndo" text="Undo">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="Clear" />
                             </items>
                         </Menu>

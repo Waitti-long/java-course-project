@@ -17,6 +17,10 @@ public class ToolPicker {
         currentTool.activate();
     }
 
+    public static EnabledTool getCurrentTool(){
+        return currentTool;
+    }
+
     public static void activate(Class<? extends EnabledTool> clazz) throws Exception {
         activateWithArgs(clazz, new Class[]{});
     }
