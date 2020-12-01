@@ -37,6 +37,7 @@ public class Main extends Application {
         primaryStage.show();
         Controller controller = loader.getController();
         scene.getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), Serializer::serialize);
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN), Serializer::deserialize);
         Revocation.init(controller);
         Serializer.init(controller);
     }
