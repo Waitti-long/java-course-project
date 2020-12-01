@@ -14,11 +14,13 @@ public class EllipseTool implements EnabledTool {
     public double x1, x2, y1, y2, width, height;
     public ColorPicker colorPicker;
     public ComboBox fillBox;
+    public ComboBox sizeBox;
 
-    EllipseTool(Pane cPane, ColorPicker colorPicker, ComboBox fillBox) {
+    EllipseTool(Pane cPane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
         this.pane = cPane;
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
+        this.sizeBox=sizeBox;
     }
 
     Ellipse ellipse = new Ellipse();
@@ -33,6 +35,10 @@ public class EllipseTool implements EnabledTool {
             ellipse.setStroke(null);
         } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
             ellipse.setStroke(colorPicker.getValue());
+            if(sizeBox.getValue()==null)
+                ellipse.setStrokeWidth(1);
+            else
+                ellipse.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             ellipse.setFill(null);
         }
         ellipse.setCenterX(x1);
@@ -42,6 +48,22 @@ public class EllipseTool implements EnabledTool {
             if (pane.contains(e.getX(), e.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
                 el.setCenterX(e.getX());
                 el.setCenterY(e.getY());
+            }
+        });
+        ellipse.setOnMousePressed(event -> {
+            Ellipse el = (Ellipse) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool) {
+                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
+                    el.setFill(colorPicker.getValue());
+                    el.setStroke(null);
+                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
+                    el.setStroke(colorPicker.getValue());
+                    if (sizeBox.getValue() == null)
+                        el.setStrokeWidth(1);
+                    else
+                        el.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    el.setFill(null);
+                }
             }
         });
         ellipse.setOnMouseReleased(e -> Revocation.push());

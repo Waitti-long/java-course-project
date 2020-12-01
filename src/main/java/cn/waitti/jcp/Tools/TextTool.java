@@ -69,6 +69,29 @@ public class TextTool implements EnabledTool {
                             p.setY(event.getY());
                         }
                     });
+            text.setOnMousePressed(event -> {
+                Text p = (Text) event.getSource();
+                if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                    p.setFill(colorPicker.getValue());
+                    if (fontBox.getValue() == null && sizeBox.getValue() == null)
+                        p.setFont(Font.font("Arial", 10));
+                    else if (fontBox.getValue() == null && sizeBox.getValue() != null) {
+                        double value = Double.parseDouble(sizeBox.getValue().toString());
+                        p.setFont(Font.font("Arial", value));
+                    } else if (fontBox.getValue() != null && sizeBox.getValue() == null)
+                        p.setFont(Font.font(fontBox.getValue().toString(), 10));
+                    else {
+                        double value = Double.parseDouble(sizeBox.getValue().toString());
+                        p.setFont(Font.font(fontBox.getValue().toString(), value));
+                    }
+                    if (boldCheck.isSelected() && !italicCheck.isSelected())
+                        p.setFont(Font.font(p.getFont().getFamily(), FontWeight.BOLD, p.getFont().getSize()));
+                    else if (!boldCheck.isSelected() && italicCheck.isSelected())
+                        p.setFont(Font.font(p.getFont().getFamily(), FontPosture.ITALIC, p.getFont().getSize()));
+                    else if (boldCheck.isSelected() && italicCheck.isSelected())
+                        p.setFont(Font.font(p.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, p.getFont().getSize()));
+                }
+            });
             text.setOnMouseReleased(e -> Revocation.push());
             text.setX(mouseEvent.getX());
             text.setY(mouseEvent.getY());
