@@ -21,9 +21,6 @@ public class Controller {
     public ComboBox sizeBox;
     public CheckBox boldCheck;
     public CheckBox italicCheck;
-    public MenuItem FileSaver;
-    public MenuItem FileClose;
-    public MenuItem Undo;
 
     public void initialize() throws Exception {
         ToolPicker.activate(MouseTool.class);
@@ -75,5 +72,9 @@ public class Controller {
 
     public void chooseModify(MouseEvent mouseEvent)throws Exception{
         ToolPicker.activate(ModifyTool.class);
+    }
+
+    public void chooseAbout(ActionEvent actionEvent)throws Exception{
+        AboutTool.showDialog();
     }
 }
