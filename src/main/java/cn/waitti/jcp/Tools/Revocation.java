@@ -3,6 +3,7 @@ package cn.waitti.jcp.Tools;
 import cn.waitti.jcp.Controller;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.shape.Path;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class Revocation {
             for (Node child : controller.cPane.getChildren()) {
                 Node node = child.getClass().getConstructor().newInstance();
                 BeanUtils.copyProperties(node, child);
+                if(child instanceof Path){
+                    ((Path)node).getElements().addAll(((Path) child).getElements());
+                }
                 arr.add(node);
             }
             stack.push(arr);
