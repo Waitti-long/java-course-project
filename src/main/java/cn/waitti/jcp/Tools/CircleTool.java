@@ -7,7 +7,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CircleTool implements EnabledTool {
     Circle circle = new Circle();

@@ -36,7 +36,8 @@ public class Main extends Application {
         primaryStage.setTitle("java-course-project");
         primaryStage.show();
         Controller controller = loader.getController();
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> Serializer.serialize(controller.cPane));
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), Serializer::serialize);
         Revocation.init(controller);
+        Serializer.init(controller);
     }
 }
