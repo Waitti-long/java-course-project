@@ -253,7 +253,8 @@ public class Serializer {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save");
         File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
-        serialize(file);
+        if (file != null)
+            serialize(file);
     }
 
     public static void serialize(File file) {
@@ -286,7 +287,8 @@ public class Serializer {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("read");
         File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
-        deserialize(file);
+        if (file != null)
+            deserialize(file);
     }
 
     public static void deserialize(File file) {

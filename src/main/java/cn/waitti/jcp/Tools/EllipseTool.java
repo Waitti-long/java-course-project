@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
@@ -43,30 +44,9 @@ public class EllipseTool implements EnabledTool {
         }
         ellipse.setCenterX(x1);
         ellipse.setCenterY(y1);
-        ellipse.setOnMouseDragged(e -> {
-            Ellipse el = (Ellipse) e.getSource();
-            if (pane.contains(e.getX(), e.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
-                el.setCenterX(e.getX());
-                el.setCenterY(e.getY());
-            }
-        });
-        ellipse.setOnMousePressed(event -> {
-            Ellipse el = (Ellipse) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool) {
-                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
-                    el.setFill(colorPicker.getValue());
-                    el.setStroke(null);
-                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
-                    el.setStroke(colorPicker.getValue());
-                    if (sizeBox.getValue() == null)
-                        el.setStrokeWidth(1);
-                    else
-                        el.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
-                    el.setFill(null);
-                }
-            }
-        });
-        ellipse.setOnMouseReleased(e -> Revocation.push());
+        ellipse.setOnMouseDragged(mouseDragged());
+        ellipse.setOnMousePressed(mousePressed());
+        ellipse.setOnMouseReleased(mouseReleased());
     }
 
     @Override
@@ -89,5 +69,41 @@ public class EllipseTool implements EnabledTool {
         ellipseList.add(ellipse);
         ellipse = new Ellipse();
         Revocation.push();
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseDragged() {
+        return e -> {
+            Ellipse el = (Ellipse) e.getSource();
+            if (pane.contains(e.getX(), e.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
+                el.setCenterX(e.getX());
+                el.setCenterY(e.getY());
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mousePressed() {
+        return event -> {
+            Ellipse el = (Ellipse) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool) {
+                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
+                    el.setFill(colorPicker.getValue());
+                    el.setStroke(null);
+                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
+                    el.setStroke(colorPicker.getValue());
+                    if (sizeBox.getValue() == null)
+                        el.setStrokeWidth(1);
+                    else
+                        el.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    el.setFill(null);
+                }
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseReleased() {
+        return e -> Revocation.push();
     }
 }
