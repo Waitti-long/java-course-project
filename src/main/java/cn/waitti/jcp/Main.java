@@ -46,7 +46,6 @@ public class Main extends Application {
         ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.sizeBox);
         ToolPicker.activateWithArgs(RecTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
         ToolPicker.activateWithArgs(EllipseTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
-        ToolPicker.activateWithArgs(ClearTool.class, new Class[]{Pane.class}, controller.cPane);
         ToolPicker.activateWithArgs(CircleTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
         ToolPicker.activateWithArgs(LineTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
         ToolPicker.activateWithArgs(TextTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class, CheckBox.class, CheckBox.class}, controller.cPane, controller.colorPicker, controller.fontBox, controller.sizeBox, controller.boldCheck, controller.italicCheck);
