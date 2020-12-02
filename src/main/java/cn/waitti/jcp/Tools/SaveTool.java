@@ -45,7 +45,7 @@ public class SaveTool implements EnabledTool{
     }
     @Override
     public void activate() {
-        Serializer.serialize();
+        FileSave();
     }
 
     @Override

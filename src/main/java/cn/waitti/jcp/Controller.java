@@ -1,5 +1,6 @@
 package cn.waitti.jcp;
 
+import cn.waitti.jcp.Serialize.Serializer;
 import cn.waitti.jcp.Tools.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -58,7 +59,7 @@ public class Controller {
         ToolPicker.activateWithArgs(TextTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class,CheckBox.class,CheckBox.class}, cPane, colorPicker, fontBox, sizeBox,boldCheck,italicCheck);
     }
 
-    public void chooseSave(ActionEvent mouseEvent)throws Exception{
+    public void chooseSaveAsPicture(ActionEvent mouseEvent)throws Exception{
         ToolPicker.activateWithArgs(SaveTool.class, new Class[]{BorderPane.class,Pane.class}, pane,cPane);
     }
 
@@ -78,7 +79,15 @@ public class Controller {
         AboutTool.showDialog();
     }
 
+    public void chooseSave(ActionEvent actionEvent)throws Exception{
+        Serializer.serialize();
+    }
+
     public void chooseOpen(ActionEvent actionEvent)throws Exception{
-        ToolPicker.activateWithArgs(OpenTool.class, new Class[]{BorderPane.class,Pane.class}, pane,cPane);
+        Serializer.deserialize();
+    }
+
+    public void chooseNew(ActionEvent actionEvent)throws Exception{
+        ToolPicker.activateWithArgs(NewTool.class, new Class[]{BorderPane.class,Pane.class}, pane,cPane);
     }
 }

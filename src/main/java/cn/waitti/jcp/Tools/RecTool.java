@@ -47,7 +47,7 @@ public class RecTool implements EnabledTool {
         rectangle.setY(y1);
         rectangle.setOnMouseDragged(mouseDragged());
         rectangle.setOnMousePressed(mousePressed());
-        rectangle.setOnMouseReleased(mouseReleased());
+        rectangle.setOnMouseDragReleased(mouseDragReleased());
     }
 
     @Override
@@ -71,6 +71,7 @@ public class RecTool implements EnabledTool {
         rectangleList.add(rectangle);
         rectangle = new Rectangle();
         Revocation.push();
+        NewTool.push();
     }
 
     @Override
@@ -102,11 +103,16 @@ public class RecTool implements EnabledTool {
                     p.setFill(null);
                 }
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return e -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 }

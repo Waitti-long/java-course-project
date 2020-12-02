@@ -22,7 +22,7 @@ public interface Tool {
         };
     }
 
-    default EventHandler<? super MouseEvent> mouseReleased() {
+    default EventHandler<? super MouseEvent> mouseDragReleased() {
         return event -> {
         };
     }

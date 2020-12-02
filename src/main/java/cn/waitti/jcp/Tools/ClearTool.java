@@ -13,6 +13,8 @@ public class ClearTool implements EnabledTool {
     @Override
     public void activate() {
         pane.getChildren().clear();
+        NewTool.push();
+        Revocation.push();
     }
 
     @Override

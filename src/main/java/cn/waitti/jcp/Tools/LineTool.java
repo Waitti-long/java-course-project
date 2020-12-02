@@ -37,7 +37,7 @@ public class LineTool implements EnabledTool {
             line.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
         line.setOnMouseDragged(mouseDragged());
         line.setOnMousePressed(mousePressed());
-        line.setOnMouseReleased(mouseReleased());
+        line.setOnMouseDragReleased(mouseDragReleased());
     }
 
     @Override
@@ -68,12 +68,17 @@ public class LineTool implements EnabledTool {
                 else
                     p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return e -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 
     @Override
@@ -84,5 +89,6 @@ public class LineTool implements EnabledTool {
         lineList.add(line);
         line = new Line();
         Revocation.push();
+        NewTool.push();
     }
 }
