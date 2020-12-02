@@ -68,6 +68,7 @@ public class CircleTool implements EnabledTool {
         return event -> {
             Circle p = (Circle) event.getSource();
             if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
+                System.out.println("?");
                 p.setCenterX(event.getX());
                 p.setCenterY(event.getY());
             }
@@ -90,9 +91,6 @@ public class CircleTool implements EnabledTool {
                         p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
                     p.setFill(null);
                 }
-                p.setOnMousePressed(mousePressed());
-                p.setOnMouseDragged(mouseDragged());
-                p.setOnMouseDragReleased(mouseDragReleased());
             }
             Revocation.push();
             NewTool.push();

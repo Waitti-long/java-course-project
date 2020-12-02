@@ -38,12 +38,14 @@ public class NewTool implements EnabledTool{
             else if(result.get()==buttonTypeNo){
                 cPane.getChildren().clear();
                 Revocation.popOut();
+                Revocation.push();
             }
         }
         //为空时不提示保存
         else{
             cPane.getChildren().clear();
             Revocation.popOut();
+            Revocation.push();
         }
     }
 
