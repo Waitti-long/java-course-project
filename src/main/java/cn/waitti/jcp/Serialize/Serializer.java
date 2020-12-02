@@ -251,10 +251,19 @@ public class Serializer {
 
     public static void serialize() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("save");
-        File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
-        if (file != null)
+        fileChooser.setTitle("保存图片");
+//        fileChooser.getExtensionFilters().addAll(
+//                new FileChooser.ExtensionFilter("PNG","*.png"),
+//                new FileChooser.ExtensionFilter("JPG","*.jpg")
+//        );
+        File file = fileChooser.showSaveDialog(controller.cPane.getScene().getWindow());
+
+
+        if (file != null) {
             serialize(file);
+            file=null;
+            fileChooser=new FileChooser();
+        }
     }
 
     public static void serialize(File file) {

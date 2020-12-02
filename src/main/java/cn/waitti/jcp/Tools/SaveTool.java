@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Serialize.Serializer;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -44,7 +45,7 @@ public class SaveTool implements EnabledTool{
     }
     @Override
     public void activate() {
-        FileSave();
+        Serializer.serialize();
     }
 
     @Override
