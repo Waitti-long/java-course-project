@@ -50,5 +50,6 @@ public class Main extends Application {
         ToolPicker.activateWithArgs(LineTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
         ToolPicker.activateWithArgs(TextTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class, CheckBox.class, CheckBox.class}, controller.cPane, controller.colorPicker, controller.fontBox, controller.sizeBox, controller.boldCheck, controller.italicCheck);
         ToolPicker.activate(MouseTool.class);
+        Serializer.scan();
     }
 }

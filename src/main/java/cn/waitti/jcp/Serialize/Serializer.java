@@ -3,18 +3,17 @@ package cn.waitti.jcp.Serialize;
 import cn.waitti.jcp.Controller;
 import cn.waitti.jcp.Tools.*;
 import com.google.gson.Gson;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import org.reflections.Reflections;
+import org.reflections.scanners.*;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.io.*;
 import java.util.*;
@@ -23,6 +22,33 @@ import java.util.stream.Collectors;
 public class Serializer {
     private static Controller controller;
     private static Gson gson = new Gson();
+    private static Map<Object, List<Pair<Class<?>, String>>> serializeMap = new HashMap<>();
+
+    public static void scan() {
+        Reflections reflections = new Reflections("cn.waitti.jcp", new TypeAnnotationsScanner(),
+                new SubTypesScanner(), new MethodAnnotationsScanner());
+        Set<Class<?>> mappers = reflections.getTypesAnnotatedWith(SerializeConfigure.class);
+        for (Class<?> mapper : mappers) {
+            SerializeConfigure conf = mapper.getAnnotation(SerializeConfigure.class);
+            var node = conf.node();
+            var classes = conf.serializeClasses();
+            var strs = conf.serializeStrings();
+            List<Pair<Class<?>, String>> list = new ArrayList<>();
+            for (int i = 0; i < classes.length; i++) {
+                list.add(new Pair<>(classes[i], strs[i]));
+                System.out.println(strs[i]);
+            }
+            serializeMap.put(node, list);
+        }
+    }
+
+    static {
+        serializeMap.put(Circle.class, Arrays.asList(new Pair<>(double.class, "CenterX"), new Pair<>(double.class, "CenterY"), new Pair<>(double.class, "Radius")));
+        serializeMap.put(Ellipse.class, Arrays.asList(new Pair<>(double.class, "CenterX"), new Pair<>(double.class, "CenterY"), new Pair<>(double.class, "RadiusX"), new Pair<>(double.class, "RadiusY")));
+        serializeMap.put(Rectangle.class, Arrays.asList(new Pair<>(double.class, "X"), new Pair<>(double.class, "Y"), new Pair<>(double.class, "Height"), new Pair<>(double.class, "Width")));
+        serializeMap.put(Line.class, Arrays.asList(new Pair<>(double.class, "StartX"), new Pair<>(double.class, "StartY"), new Pair<>(double.class, "EndX"), new Pair<>(double.class, "EndY")));
+        serializeMap.put(Text.class, Arrays.asList(new Pair<>(String.class, "Text"), new Pair<>(String.class, "Font"), new Pair<>(double.class, "Size")));
+    }
 
     public static void init(Controller controller) {
         Serializer.controller = controller;
@@ -49,204 +75,53 @@ public class Serializer {
         }
     }
 
-
-    private static Map<Object, Object> serializeCircle(Node child) {
-        Circle node = (Circle) child;
-        Map<Object, Object> ret = new HashMap<>(Map.of(
-                "CenterX", node.getCenterX(),
-                "CenterY", node.getCenterY(),
-                "Radius", node.getRadius()
-        ));
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Circle", ret);
-    }
-
-    private static Circle deserializeCircle(Map<?, ?> map) {
-        Circle node = new Circle();
-        for (Object o : map.keySet()) {
-            if (o.equals("CenterX")) node.setCenterX((double) map.get(o));
-            else if (o.equals("CenterY")) node.setCenterY((double) map.get(o));
-            else if (o.equals("Radius")) node.setRadius((double) map.get(o));
-        }
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
-    }
-
-    private static Map<Object, Object> serializeEllipse(Node child) {
-        Ellipse node = (Ellipse) child;
-        Map<Object, Object> ret = new HashMap<>(Map.of(
-                "CenterX", node.getCenterX(),
-                "CenterY", node.getCenterY(),
-                "RadiusX", node.getRadiusX(),
-                "RadiusY", node.getRadiusY()
-        ));
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Ellipse", ret);
-    }
-
-    private static Ellipse deserializeEllipse(Map<?, ?> map) {
-        var node = new Ellipse();
-        for (Object o : map.keySet()) {
-            if (o.equals("CenterX")) node.setCenterX((double) map.get(o));
-            else if (o.equals("CenterY")) node.setCenterY((double) map.get(o));
-            else if (o.equals("RadiusX")) node.setRadiusX((double) map.get(o));
-            else if (o.equals("RadiusY")) node.setRadiusY((double) map.get(o));
-        }
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
-    }
-
-    private static Map<Object, Object> serializeRectangle(Node child) {
-        Rectangle node = (Rectangle) child;
-        Map<Object, Object> ret = new HashMap<>(Map.of(
-                "X", node.getX(),
-                "Y", node.getY(),
-                "Height", node.getHeight(),
-                "Width", node.getWidth()
-        ));
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Rectangle", ret);
-    }
-
-    private static Rectangle deserializeRectangle(Map<?, ?> map) {
-        var node = new Rectangle();
-        for (Object o : map.keySet()) {
-            if (o.equals("X")) node.setX((double) map.get(o));
-            else if (o.equals("Y")) node.setY((double) map.get(o));
-            else if (o.equals("Height")) node.setHeight((double) map.get(o));
-            else if (o.equals("Width")) node.setWidth((double) map.get(o));
-        }
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
-    }
-
-    private static Map<Object, Object> serializeLine(Node child) {
-        Line node = (Line) child;
-        Map<Object, Object> ret = new HashMap<>(Map.of(
-                "StartX", node.getStartX(),
-                "StartY", node.getStartY(),
-                "EndX", node.getEndX(),
-                "EndY", node.getEndY()
-        ));
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Line", ret);
-    }
-
-    private static Line deserializeLine(Map<?, ?> map) {
-        var node = new Line();
-        for (Object o : map.keySet()) {
-            if (o.equals("StartX")) node.setStartX((double) map.get(o));
-            else if (o.equals("StartY")) node.setStartY((double) map.get(o));
-            else if (o.equals("EndX")) node.setEndX((double) map.get(o));
-            else if (o.equals("EndY")) node.setEndY((double) map.get(o));
-        }
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
-    }
-
-
-    private static Map<Object, Object> serializePath(Node child) {
-        Path node = (Path) child;
-        Map<Object, Object> ret = new HashMap<>();
-        var list = new ArrayList<>();
-        for (PathElement element : node.getElements()) {
-            if (element instanceof MoveTo) {
-                var el = (MoveTo) element;
-                list.add(Map.of("X", el.getX(), "Y", el.getY()));
-            } else if (element instanceof LineTo) {
-                var el = (LineTo) element;
-                list.add(Map.of("X", el.getX(), "Y", el.getY()));
+    private static <T extends Node> void deserializeFill(T child, Map<?, ?> map) {
+        Class<? extends Node> clazz = child.getClass();
+        try {
+            var filled = (boolean) map.get("Filled");
+            var color = Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B"));
+            Object nil = null;
+            if (filled) {
+                clazz.getMethod("setFill", Paint.class).invoke(child, color);
+                clazz.getMethod("setStroke", Paint.class).invoke(child, nil);
+            } else {
+                clazz.getMethod("setStroke", Paint.class).invoke(child, color);
+                clazz.getMethod("setFill", Paint.class).invoke(child, nil);
+                clazz.getMethod("setStrokeWidth", double.class).invoke(child, (double) map.get("StrokeWidth"));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ret.put("Elements", list);
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Path", ret);
     }
 
-    private static Path deserializePath(Map<?, ?> map) {
-        var node = new Path();
-        for (Object o : map.keySet()) {
-            if (o.equals("Elements")) {
-                var list = (ArrayList<?>) map.get(o);
-                for (int i = 0; i < list.size(); i++) {
-                    var m = (Map<?, ?>) list.get(i);
-                    if (i == 0)
-                        node.getElements().add(new MoveTo((double) m.get("X"), (double) m.get("Y")));
-                    else
-                        node.getElements().add(new LineTo((double) m.get("X"), (double) m.get("Y")));
-                }
+    private static Map<Object, Object> serializeNode(Node child) {
+        var clazz = child.getClass();
+        var list = serializeMap.get(clazz);
+        var ret = new HashMap<>();
+        try {
+            for (Pair<Class<?>, String> s : list) {
+                ret.put(s.getValue(), clazz.getMethod("get" + s.getValue()).invoke(child));
             }
+            ret.putAll(serializeFilled((Paint) clazz.getMethod("getFill").invoke(child), (Paint) clazz.getMethod("getStroke").invoke(child), (double) clazz.getMethod("getStrokeWidth").invoke(child)));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
+        return Map.of(clazz.getName(), ret);
     }
 
-    private static Map<Object, Object> serializeText(Node child) {
-        Text node = (Text) child;
-        Map<Object, Object> ret = new HashMap<>(Map.of(
-                "Text", node.getText(),
-                "Font", node.getFont().getName(),
-                "Size", node.getFont().getSize()
-        ));
-        ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
-        return Map.of("Text", ret);
-    }
-
-    private static Text deserializeText(Map<?, ?> map) {
-        var node = new Text();
-        double size = 0;
-        for (Object o : map.keySet()) {
-            if (o.equals("Size")) size = (double) map.get(o);
+    private static Node deserializeNode(String clazzStr, Map<?, ?> map) {
+        Node ret = null;
+        try {
+            Class<? extends Node> clazz = (Class<? extends Node>) Class.forName(clazzStr);
+            var list = serializeMap.get(clazz);
+            ret = clazz.getConstructor().newInstance();
+            for (Pair<Class<?>, String> s : list) {
+                clazz.getMethod("set" + s.getValue(), s.getKey()).invoke(ret, map.get(s.getValue()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        for (Object o : map.keySet()) {
-            if (o.equals("Text")) node.setText((String) map.get(o));
-            else if (o.equals("Font")) node.setFont(Font.font((String) map.get(o), size));
-        }
-
-        if ((boolean) map.get("Filled")) {
-            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStroke(null);
-        } else {
-            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
-            node.setStrokeWidth((double) map.get("StrokeWidth"));
-            node.setFill(null);
-        }
-        return node;
+        return ret;
     }
 
     public static void serialize() {
@@ -261,21 +136,7 @@ public class Serializer {
         try (PrintWriter pw = new PrintWriter(file)) {
             var res = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {
-                if (child instanceof Circle) {
-                    res.add(serializeCircle(child));
-                } else if (child instanceof Ellipse) {
-                    res.add(serializeEllipse(child));
-                } else if (child instanceof Rectangle) {
-                    res.add(serializeRectangle(child));
-                } else if (child instanceof Line) {
-                    res.add(serializeLine(child));
-                } else if (child instanceof Path) {
-                    res.add(serializePath(child));
-                } else if (child instanceof Text) {
-                    res.add(serializeText(child));
-                } else {
-                    System.out.println("there are something can't be serialize");
-                }
+                res.add(serializeNode(child));
             }
             pw.println(gson.toJson(res));
         } catch (Exception e) {
@@ -301,30 +162,10 @@ public class Serializer {
             for (Object o : arr) {
                 var map = (Map<?, ?>) o;
                 for (Object key : map.keySet()) {
-                    Node node = null;
-                    EnabledTool tool = null;
-                    if (key.equals("Circle")) {
-                        node = deserializeCircle((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(CircleTool.class);
-                    } else if (key.equals("Ellipse")) {
-                        node = deserializeEllipse((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(EllipseTool.class);
-                    } else if (key.equals("Rectangle")) {
-                        node = deserializeRectangle((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(RecTool.class);
-                    } else if (key.equals("Line")) {
-                        node = deserializeLine((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(LineTool.class);
-                    } else if (key.equals("Path")) {
-                        node = deserializePath((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(PenTool.class);
-                    } else if (key.equals("Text")) {
-                        node = deserializeText((Map<?, ?>) map.get(key));
-                        tool = ToolPicker.getTool(TextTool.class);
-                    } else {
-                        System.out.println("there are something can't be deserialize");
-                    }
+                    Node node = deserializeNode((String) key, (Map<?, ?>) map.get(key));
+                    EnabledTool tool = ToolPicker.getTool(null);
                     if (node != null && tool != null) {
+                        deserializeFill(node, (Map<?, ?>) map.get(key));
                         node.setOnMouseReleased(tool.mouseReleased());
                         node.setOnMouseDragged(tool.mouseDragged());
                         node.setOnMousePressed(tool.mousePressed());
