@@ -26,7 +26,7 @@ public class PenTool implements EnabledTool {
         path = new Path();
         path.setOnMouseDragged(mouseDragged());
         path.setOnMousePressed(mousePressed());
-        path.setOnMouseReleased(mouseReleased());
+        path.setOnMouseDragReleased(mouseDragReleased());
         path.setStroke(colorPicker.getValue());
         if(sizeBox.getValue()==null)
             path.setStrokeWidth(1);
@@ -47,6 +47,7 @@ public class PenTool implements EnabledTool {
     public void end(MouseEvent event) {
         path = null;
         Revocation.push();
+        NewTool.push();
     }
 
     @Override
@@ -79,11 +80,16 @@ public class PenTool implements EnabledTool {
                 else
                     p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return e -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 }

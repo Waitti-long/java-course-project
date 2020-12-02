@@ -37,7 +37,6 @@ public class Revocation {
         }
     }
 
-
     public static void pop() {
         controller.cPane.getChildren().clear();
         if(stack.size() > 1)stack.pop();
@@ -46,6 +45,10 @@ public class Revocation {
         }
     }
 
+    public static void popOut(){
+        while (!stack.isEmpty())
+            stack.pop();
+    }
     public static Controller getController(){
         return Revocation.controller;
     }

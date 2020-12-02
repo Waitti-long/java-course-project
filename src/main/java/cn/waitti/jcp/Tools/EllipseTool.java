@@ -46,7 +46,7 @@ public class EllipseTool implements EnabledTool {
         ellipse.setCenterY(y1);
         ellipse.setOnMouseDragged(mouseDragged());
         ellipse.setOnMousePressed(mousePressed());
-        ellipse.setOnMouseReleased(mouseReleased());
+        ellipse.setOnMouseDragReleased(mouseDragReleased());
     }
 
     @Override
@@ -69,6 +69,7 @@ public class EllipseTool implements EnabledTool {
         ellipseList.add(ellipse);
         ellipse = new Ellipse();
         Revocation.push();
+        NewTool.push();
     }
 
     @Override
@@ -99,11 +100,16 @@ public class EllipseTool implements EnabledTool {
                     el.setFill(null);
                 }
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return e -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 }

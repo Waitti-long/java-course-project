@@ -34,13 +34,10 @@ public class Main extends Application {
         var loader = new FXMLLoader(getClass().getResource("/main.fxml"));
         Scene scene = new Scene(loader.load(), 640, 480);
         scene.getStylesheets().add(getClass().getResource("/main.css").toExternalForm());
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN), Revocation::pop);
         primaryStage.setScene(scene);
         primaryStage.setTitle("java-course-project");
         primaryStage.show();
         Controller controller = loader.getController();
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), Serializer::serialize);
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN), Serializer::deserialize);
         Revocation.init(controller);
         Serializer.init(controller);
         ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.sizeBox);

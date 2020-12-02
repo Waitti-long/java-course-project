@@ -13,7 +13,7 @@
     <left>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <TilePane alignment="CENTER_LEFT" prefColumns="2" prefHeight="300.0" prefWidth="100.0">
+                <TilePane alignment="CENTER" prefColumns="2" prefHeight="300.0" prefWidth="100.0">
                     <BorderPane.margin>
                         <Insets left="10.0" right="10.0" />
                     </BorderPane.margin>
@@ -31,7 +31,7 @@
                             </ImageView>
                         </graphic>
                         <TilePane.margin>
-                            <Insets left="2.0" />
+                            <Insets />
                         </TilePane.margin>
                     </Button>
                     <Button layoutX="11.0" layoutY="42.0" mnemonicParsing="false" onMouseReleased="#chooseRec" prefHeight="32.0" prefWidth="46.0" styleClass="tool-btn">
@@ -149,7 +149,7 @@
                         </FXCollections>
                      </items>
                   </ComboBox>
-                  <ComboBox fx:id="sizeBox" layoutX="12.0" layoutY="48.0" prefWidth="100.0" promptText="文字大小">
+                  <ComboBox fx:id="sizeBox" layoutX="12.0" layoutY="48.0" prefWidth="100.0" promptText="大小">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                             <Integer fx:value="2" />
@@ -213,11 +213,22 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                        <MenuItem mnemonicParsing="false" onAction="#chooseClear" text="New" />
-                        <MenuItem mnemonicParsing="false" onAction="#chooseOpen" text="Open" />
+                        <MenuItem mnemonicParsing="false" onAction="#chooseNew" text="New">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#chooseOpen" text="Open">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                         <MenuItem mnemonicParsing="false" onAction="#chooseSave" text="Save">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#chooseSaveAsPicture" text="Save As Picture">
+                           <accelerator>
+                              <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator></MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
                                 <MenuItem mnemonicParsing="false" onAction="#chooseClose" text="Close" />

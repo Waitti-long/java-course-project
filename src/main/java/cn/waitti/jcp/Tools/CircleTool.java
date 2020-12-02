@@ -46,7 +46,7 @@ public class CircleTool implements EnabledTool {
         }
         circle.setOnMouseDragged(mouseDragged());
         circle.setOnMousePressed(mousePressed());
-        circle.setOnMouseReleased(mouseReleased());
+        circle.setOnMouseDragReleased(mouseDragReleased());
     }
 
     @Override
@@ -60,6 +60,7 @@ public class CircleTool implements EnabledTool {
         circleList.add(circle);
         circle = new Circle();
         Revocation.push();
+        NewTool.push();
     }
 
     @Override
@@ -67,6 +68,7 @@ public class CircleTool implements EnabledTool {
         return event -> {
             Circle p = (Circle) event.getSource();
             if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
+                System.out.println("?");
                 p.setCenterX(event.getX());
                 p.setCenterY(event.getY());
             }
@@ -90,11 +92,16 @@ public class CircleTool implements EnabledTool {
                     p.setFill(null);
                 }
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return event -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 }

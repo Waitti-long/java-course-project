@@ -126,10 +126,17 @@ public class Serializer {
 
     public static void serialize() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("save");
-        File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
-        if (file != null)
+        fileChooser.setTitle("保存");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TXT","*.txt")
+        );
+        File file = fileChooser.showSaveDialog(controller.cPane.getScene().getWindow());
+
+        if (file != null) {
             serialize(file);
+            file=null;
+            fileChooser=new FileChooser();
+        }
     }
 
     public static void serialize(File file) {
@@ -146,10 +153,14 @@ public class Serializer {
 
     public static void deserialize() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("read");
+        fileChooser.setTitle("打开");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.txt"));
         File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
-        if (file != null)
+        if (file != null) {
             deserialize(file);
+            file=null;
+            fileChooser=new FileChooser();
+        }
     }
 
     public static void deserialize(File file) {
@@ -166,13 +177,14 @@ public class Serializer {
                     EnabledTool tool = ToolPicker.getTool(null);
                     if (node != null && tool != null) {
                         deserializeFill(node, (Map<?, ?>) map.get(key));
-                        node.setOnMouseReleased(tool.mouseReleased());
+                        node.setOnMouseDragReleased(tool.mouseDragReleased());
                         node.setOnMouseDragged(tool.mouseDragged());
                         node.setOnMousePressed(tool.mousePressed());
                         children.add(node);
                     }
                 }
             }
+                NewTool.push();
         } catch (Exception e) {
             e.printStackTrace();
         }

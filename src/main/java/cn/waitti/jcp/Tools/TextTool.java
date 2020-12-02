@@ -64,7 +64,7 @@ public class TextTool implements EnabledTool {
                 text.setFont(Font.font(text.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, text.getFont().getSize()));
             text.setOnMouseDragged(mouseDragged());
             text.setOnMousePressed(mousePressed());
-            text.setOnMouseReleased(mouseReleased());
+            text.setOnMouseDragReleased(mouseDragReleased());
             text.setX(mouseEvent.getX());
             text.setY(mouseEvent.getY());
             pane.getChildren().add(text);
@@ -76,6 +76,7 @@ public class TextTool implements EnabledTool {
     @Override
     public void end(MouseEvent event) {
             Revocation.push();
+            NewTool.push();
     }
 
     @Override
@@ -113,11 +114,16 @@ public class TextTool implements EnabledTool {
                 else if (boldCheck.isSelected() && italicCheck.isSelected())
                     p.setFont(Font.font(p.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, p.getFont().getSize()));
             }
+            Revocation.push();
+            NewTool.push();
         };
     }
 
     @Override
-    public EventHandler<? super MouseEvent> mouseReleased() {
-        return e -> Revocation.push();
+    public EventHandler<? super MouseEvent> mouseDragReleased() {
+        return event -> {
+            Revocation.push();
+            NewTool.push();
+        };
     }
 }
