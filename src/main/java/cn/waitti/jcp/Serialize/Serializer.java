@@ -1,7 +1,6 @@
 package cn.waitti.jcp.Serialize;
 
 import cn.waitti.jcp.Controller;
-import cn.waitti.jcp.Shapes.VCircle;
 import com.google.gson.Gson;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
