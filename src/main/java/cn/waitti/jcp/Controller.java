@@ -77,4 +77,8 @@ public class Controller {
     public void chooseAbout(ActionEvent actionEvent)throws Exception{
         AboutTool.showDialog();
     }
+
+    public void chooseOpen(ActionEvent actionEvent)throws Exception{
+        ToolPicker.activateWithArgs(OpenTool.class, new Class[]{BorderPane.class,Pane.class}, pane,cPane);
+    }
 }
