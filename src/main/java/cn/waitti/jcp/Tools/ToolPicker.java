@@ -24,4 +24,8 @@ public class ToolPicker {
     public static void activate(Class<? extends EnabledTool> clazz) throws Exception {
         activateWithArgs(clazz, new Class[]{});
     }
+
+    public static EnabledTool getTool(Class<? extends EnabledTool> clazz){
+        return store.get(clazz);
+    }
 }

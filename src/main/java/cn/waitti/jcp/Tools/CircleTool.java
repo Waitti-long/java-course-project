@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +21,11 @@ public class CircleTool implements EnabledTool {
     double x1, y1, x2, y2;
     List<Circle> circleList = new ArrayList<>();
 
-    CircleTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
+    CircleTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox, ComboBox sizeBox) {
         this.pane = pane;
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
-        this.sizeBox=sizeBox;
+        this.sizeBox = sizeBox;
     }
 
 
@@ -37,39 +38,15 @@ public class CircleTool implements EnabledTool {
             circle.setStroke(null);
         } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
             circle.setStroke(colorPicker.getValue());
-            if(sizeBox.getValue()==null)
+            if (sizeBox.getValue() == null)
                 circle.setStrokeWidth(1);
             else
                 circle.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             circle.setFill(null);
         }
-        circle.setOnMouseDragged(
-                event -> {
-                    Circle p = (Circle) event.getSource();
-                    if (pane.contains(event.getX(), event.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
-                        p.setCenterX(event.getX());
-                        p.setCenterY(event.getY());
-                    }
-                });
-        circle.setOnMousePressed(event -> {
-            Circle p = (Circle) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
-                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
-                    p.setFill(colorPicker.getValue());
-                    p.setStroke(null);
-                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
-                    p.setStroke(colorPicker.getValue());
-                    if(sizeBox.getValue()==null)
-                        p.setStrokeWidth(1);
-                    else
-                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
-                    p.setFill(null);
-                }
-            }
-        });
-        circle.setOnMouseReleased(
-                event -> Revocation.push()
-        );
+        circle.setOnMouseDragged(mouseDragged());
+        circle.setOnMousePressed(mousePressed());
+        circle.setOnMouseReleased(mouseReleased());
     }
 
     @Override
@@ -83,5 +60,41 @@ public class CircleTool implements EnabledTool {
         circleList.add(circle);
         circle = new Circle();
         Revocation.push();
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseDragged() {
+        return event -> {
+            Circle p = (Circle) event.getSource();
+            if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
+                p.setCenterX(event.getX());
+                p.setCenterY(event.getY());
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mousePressed() {
+        return event -> {
+            Circle p = (Circle) event.getSource();
+            if (ToolPicker.getCurrentTool() instanceof ModifyTool) {
+                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
+                    p.setFill(colorPicker.getValue());
+                    p.setStroke(null);
+                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
+                    p.setStroke(colorPicker.getValue());
+                    if (sizeBox.getValue() == null)
+                        p.setStrokeWidth(1);
+                    else
+                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    p.setFill(null);
+                }
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseReleased() {
+        return event -> Revocation.push();
     }
 }
