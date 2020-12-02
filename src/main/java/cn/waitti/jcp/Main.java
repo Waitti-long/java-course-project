@@ -1,12 +1,15 @@
 package cn.waitti.jcp;
 
 import cn.waitti.jcp.Serialize.Serializer;
-import cn.waitti.jcp.Tools.Revocation;
+import cn.waitti.jcp.Tools.*;
 import com.sun.javafx.fxml.FXMLLoaderHelper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -40,5 +43,13 @@ public class Main extends Application {
         scene.getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN), Serializer::deserialize);
         Revocation.init(controller);
         Serializer.init(controller);
+        ToolPicker.activateWithArgs(PenTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.sizeBox);
+        ToolPicker.activateWithArgs(RecTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
+        ToolPicker.activateWithArgs(EllipseTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
+        ToolPicker.activateWithArgs(ClearTool.class, new Class[]{Pane.class}, controller.cPane);
+        ToolPicker.activateWithArgs(CircleTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
+        ToolPicker.activateWithArgs(LineTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class}, controller.cPane, controller.colorPicker, controller.fillBox, controller.sizeBox);
+        ToolPicker.activateWithArgs(TextTool.class, new Class[]{Pane.class, ColorPicker.class, ComboBox.class, ComboBox.class, CheckBox.class, CheckBox.class}, controller.cPane, controller.colorPicker, controller.fontBox, controller.sizeBox, controller.boldCheck, controller.italicCheck);
+        ToolPicker.activate(MouseTool.class);
     }
 }

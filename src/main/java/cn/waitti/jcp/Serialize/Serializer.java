@@ -1,18 +1,21 @@
 package cn.waitti.jcp.Serialize;
 
 import cn.waitti.jcp.Controller;
+import cn.waitti.jcp.Tools.*;
 import com.google.gson.Gson;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,16 +29,16 @@ public class Serializer {
     }
 
     private static Map<Object, Object> serializeFilled(Paint fill, Paint stroke, Double strokeWidth) {
-        if(fill != null){
-            Color color = (Color)fill;
+        if (fill != null) {
+            Color color = (Color) fill;
             return Map.of(
                     "Filled", true,
                     "R", color.getRed(),
                     "G", color.getGreen(),
                     "B", color.getBlue()
             );
-        }else {
-            Color color = (Color)stroke;
+        } else {
+            Color color = (Color) stroke;
             return Map.of(
                     "Filled", false,
                     "R", color.getRed(),
@@ -46,9 +49,6 @@ public class Serializer {
         }
     }
 
-    private static void deserializeFilled(Node node, Map<?, ?> map) {
-        
-    }
 
     private static Map<Object, Object> serializeCircle(Node child) {
         Circle node = (Circle) child;
@@ -91,6 +91,25 @@ public class Serializer {
         return Map.of("Ellipse", ret);
     }
 
+    private static Ellipse deserializeEllipse(Map<?, ?> map) {
+        var node = new Ellipse();
+        for (Object o : map.keySet()) {
+            if (o.equals("CenterX")) node.setCenterX((double) map.get(o));
+            else if (o.equals("CenterY")) node.setCenterY((double) map.get(o));
+            else if (o.equals("RadiusX")) node.setRadiusX((double) map.get(o));
+            else if (o.equals("RadiusY")) node.setRadiusY((double) map.get(o));
+        }
+        if ((boolean) map.get("Filled")) {
+            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStroke(null);
+        } else {
+            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStrokeWidth((double) map.get("StrokeWidth"));
+            node.setFill(null);
+        }
+        return node;
+    }
+
     private static Map<Object, Object> serializeRectangle(Node child) {
         Rectangle node = (Rectangle) child;
         Map<Object, Object> ret = new HashMap<>(Map.of(
@@ -101,6 +120,25 @@ public class Serializer {
         ));
         ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
         return Map.of("Rectangle", ret);
+    }
+
+    private static Rectangle deserializeRectangle(Map<?, ?> map) {
+        var node = new Rectangle();
+        for (Object o : map.keySet()) {
+            if (o.equals("X")) node.setX((double) map.get(o));
+            else if (o.equals("Y")) node.setY((double) map.get(o));
+            else if (o.equals("Height")) node.setHeight((double) map.get(o));
+            else if (o.equals("Width")) node.setWidth((double) map.get(o));
+        }
+        if ((boolean) map.get("Filled")) {
+            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStroke(null);
+        } else {
+            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStrokeWidth((double) map.get("StrokeWidth"));
+            node.setFill(null);
+        }
+        return node;
     }
 
     private static Map<Object, Object> serializeLine(Node child) {
@@ -114,6 +152,26 @@ public class Serializer {
         ret.putAll(serializeFilled(node.getFill(), node.getStroke(), node.getStrokeWidth()));
         return Map.of("Line", ret);
     }
+
+    private static Line deserializeLine(Map<?, ?> map) {
+        var node = new Line();
+        for (Object o : map.keySet()) {
+            if (o.equals("StartX")) node.setStartX((double) map.get(o));
+            else if (o.equals("StartY")) node.setStartY((double) map.get(o));
+            else if (o.equals("EndX")) node.setEndX((double) map.get(o));
+            else if (o.equals("EndY")) node.setEndY((double) map.get(o));
+        }
+        if ((boolean) map.get("Filled")) {
+            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStroke(null);
+        } else {
+            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStrokeWidth((double) map.get("StrokeWidth"));
+            node.setFill(null);
+        }
+        return node;
+    }
+
 
     private static Map<Object, Object> serializePath(Node child) {
         Path node = (Path) child;
@@ -133,6 +191,31 @@ public class Serializer {
         return Map.of("Path", ret);
     }
 
+    private static Path deserializePath(Map<?, ?> map) {
+        var node = new Path();
+        for (Object o : map.keySet()) {
+            if (o.equals("Elements")) {
+                var list = (ArrayList<?>) map.get(o);
+                for (int i = 0; i < list.size(); i++) {
+                    var m = (Map<?, ?>) list.get(i);
+                    if (i == 0)
+                        node.getElements().add(new MoveTo((double) m.get("X"), (double) m.get("Y")));
+                    else
+                        node.getElements().add(new LineTo((double) m.get("X"), (double) m.get("Y")));
+                }
+            }
+        }
+        if ((boolean) map.get("Filled")) {
+            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStroke(null);
+        } else {
+            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStrokeWidth((double) map.get("StrokeWidth"));
+            node.setFill(null);
+        }
+        return node;
+    }
+
     private static Map<Object, Object> serializeText(Node child) {
         Text node = (Text) child;
         Map<Object, Object> ret = new HashMap<>(Map.of(
@@ -144,8 +227,37 @@ public class Serializer {
         return Map.of("Text", ret);
     }
 
+    private static Text deserializeText(Map<?, ?> map) {
+        var node = new Text();
+        double size = 0;
+        for (Object o : map.keySet()) {
+            if (o.equals("Size")) size = (double) map.get(o);
+        }
+        for (Object o : map.keySet()) {
+            if (o.equals("Text")) node.setText((String) map.get(o));
+            else if (o.equals("Font")) node.setFont(Font.font((String) map.get(o), size));
+        }
+
+        if ((boolean) map.get("Filled")) {
+            node.setFill(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStroke(null);
+        } else {
+            node.setStroke(Color.color((double) map.get("R"), (double) map.get("G"), (double) map.get("B")));
+            node.setStrokeWidth((double) map.get("StrokeWidth"));
+            node.setFill(null);
+        }
+        return node;
+    }
+
     public static void serialize() {
-        try (PrintWriter pw = new PrintWriter(new File("C:/Users/Waitti/Desktop/1.txt"))) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("save");
+        File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
+        serialize(file);
+    }
+
+    public static void serialize(File file) {
+        try (PrintWriter pw = new PrintWriter(file)) {
             var res = new ArrayList<>();
             for (Node child : controller.cPane.getChildren()) {
                 if (child instanceof Circle) {
@@ -171,16 +283,50 @@ public class Serializer {
     }
 
     public static void deserialize() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("read");
+        File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
+        deserialize(file);
+    }
+
+    public static void deserialize(File file) {
+        System.out.println("deserialize");
         var children = controller.cPane.getChildren();
         children.clear();
-        try (var sc = new BufferedReader(new FileReader(new File("C:/Users/Waitti/Desktop/1.txt")))) {
+        try (var sc = new BufferedReader(new FileReader(file))) {
             String r = sc.lines().collect(Collectors.joining());
             var arr = gson.fromJson(r, ArrayList.class);
             for (Object o : arr) {
                 var map = (Map<?, ?>) o;
                 for (Object key : map.keySet()) {
+                    Node node = null;
+                    EnabledTool tool = null;
                     if (key.equals("Circle")) {
-                        children.add(deserializeCircle((Map<?, ?>) map.get(key)));
+                        node = deserializeCircle((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(CircleTool.class);
+                    } else if (key.equals("Ellipse")) {
+                        node = deserializeEllipse((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(EllipseTool.class);
+                    } else if (key.equals("Rectangle")) {
+                        node = deserializeRectangle((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(RecTool.class);
+                    } else if (key.equals("Line")) {
+                        node = deserializeLine((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(LineTool.class);
+                    } else if (key.equals("Path")) {
+                        node = deserializePath((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(PenTool.class);
+                    } else if (key.equals("Text")) {
+                        node = deserializeText((Map<?, ?>) map.get(key));
+                        tool = ToolPicker.getTool(TextTool.class);
+                    } else {
+                        System.out.println("there are something can't be deserialize");
+                    }
+                    if (node != null && tool != null) {
+                        node.setOnMouseReleased(tool.mouseReleased());
+                        node.setOnMouseDragged(tool.mouseDragged());
+                        node.setOnMousePressed(tool.mousePressed());
+                        children.add(node);
                     }
                 }
             }
