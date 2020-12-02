@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
@@ -44,32 +45,9 @@ public class RecTool implements EnabledTool {
         }
         rectangle.setX(x1);
         rectangle.setY(y1);
-        rectangle.setOnMouseDragged(
-                event -> {
-                    Rectangle p = (Rectangle) event.getSource();
-                    if(pane.contains(event.getX(),event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
-                        p.setX(event.getX());
-                        p.setY(event.getY());
-                    }
-                });
-        rectangle.setOnMousePressed(event -> {
-            Rectangle p = (Rectangle) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
-                if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
-                    p.setFill(colorPicker.getValue());
-                    p.setStroke(null);
-                }
-                else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
-                    p.setStroke(colorPicker.getValue());
-                    if(sizeBox.getValue()==null)
-                        p.setStrokeWidth(1);
-                    else
-                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
-                    p.setFill(null);
-                }
-            }
-        });
-        rectangle.setOnMouseReleased(e -> Revocation.push());
+        rectangle.setOnMouseDragged(mouseDragged());
+        rectangle.setOnMousePressed(mousePressed());
+        rectangle.setOnMouseReleased(mouseReleased());
     }
 
     @Override
@@ -93,5 +71,42 @@ public class RecTool implements EnabledTool {
         rectangleList.add(rectangle);
         rectangle = new Rectangle();
         Revocation.push();
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseDragged() {
+        return event -> {
+            Rectangle p = (Rectangle) event.getSource();
+            if(pane.contains(event.getX(),event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
+                p.setX(event.getX());
+                p.setY(event.getY());
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mousePressed() {
+        return event -> {
+            Rectangle p = (Rectangle) event.getSource();
+            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+                if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
+                    p.setFill(colorPicker.getValue());
+                    p.setStroke(null);
+                }
+                else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
+                    p.setStroke(colorPicker.getValue());
+                    if(sizeBox.getValue()==null)
+                        p.setStrokeWidth(1);
+                    else
+                        p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                    p.setFill(null);
+                }
+            }
+        };
+    }
+
+    @Override
+    public EventHandler<? super MouseEvent> mouseReleased() {
+        return e -> Revocation.push();
     }
 }
