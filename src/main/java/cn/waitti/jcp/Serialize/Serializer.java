@@ -13,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import org.reflections.Reflections;
 import org.reflections.scanners.*;
-import org.reflections.util.ConfigurationBuilder;
 
 import java.io.*;
 import java.util.*;
@@ -23,6 +22,7 @@ public class Serializer {
     private static Controller controller;
     private static Gson gson = new Gson();
     private static Map<Object, List<Pair<Class<?>, String>>> serializeMap = new HashMap<>();
+    private static Map<Class<? extends Node>, Class<? extends EnabledTool>> node2Tool = new HashMap<>();
 
     public static void scan() {
         Reflections reflections = new Reflections("cn.waitti.jcp", new TypeAnnotationsScanner(),
@@ -36,22 +36,16 @@ public class Serializer {
             List<Pair<Class<?>, String>> list = new ArrayList<>();
             for (int i = 0; i < classes.length; i++) {
                 list.add(new Pair<>(classes[i], strs[i]));
-                System.out.println(strs[i]);
             }
+            Class<? extends EnabledTool> cl = (Class<? extends EnabledTool>) mapper;
+            node2Tool.put(node, cl);
             serializeMap.put(node, list);
         }
     }
 
-    static {
-        serializeMap.put(Circle.class, Arrays.asList(new Pair<>(double.class, "CenterX"), new Pair<>(double.class, "CenterY"), new Pair<>(double.class, "Radius")));
-        serializeMap.put(Ellipse.class, Arrays.asList(new Pair<>(double.class, "CenterX"), new Pair<>(double.class, "CenterY"), new Pair<>(double.class, "RadiusX"), new Pair<>(double.class, "RadiusY")));
-        serializeMap.put(Rectangle.class, Arrays.asList(new Pair<>(double.class, "X"), new Pair<>(double.class, "Y"), new Pair<>(double.class, "Height"), new Pair<>(double.class, "Width")));
-        serializeMap.put(Line.class, Arrays.asList(new Pair<>(double.class, "StartX"), new Pair<>(double.class, "StartY"), new Pair<>(double.class, "EndX"), new Pair<>(double.class, "EndY")));
-        serializeMap.put(Text.class, Arrays.asList(new Pair<>(String.class, "Text"), new Pair<>(String.class, "Font"), new Pair<>(double.class, "Size")));
-    }
-
     public static void init(Controller controller) {
         Serializer.controller = controller;
+        scan();
     }
 
     private static Map<Object, Object> serializeFilled(Paint fill, Paint stroke, Double strokeWidth) {
@@ -94,6 +88,7 @@ public class Serializer {
         }
     }
 
+    // TODO Pane.class
     private static Map<Object, Object> serializeNode(Node child) {
         var clazz = child.getClass();
         var list = serializeMap.get(clazz);
@@ -174,7 +169,7 @@ public class Serializer {
                 var map = (Map<?, ?>) o;
                 for (Object key : map.keySet()) {
                     Node node = deserializeNode((String) key, (Map<?, ?>) map.get(key));
-                    EnabledTool tool = ToolPicker.getTool(null);
+                    EnabledTool tool = ToolPicker.getTool(node2Tool.get(Class.forName((String) key)));
                     if (node != null && tool != null) {
                         deserializeFill(node, (Map<?, ?>) map.get(key));
                         node.setOnMouseDragReleased(tool.mouseDragReleased());
