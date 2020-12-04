@@ -41,6 +41,7 @@ public class Serializer {
             node2Tool.put(node, cl);
             serializeMap.put(node, list);
         }
+        node2Tool.put(Path.class, PenTool.class);
     }
 
     public static void init(Controller controller) {
@@ -94,8 +95,29 @@ public class Serializer {
         var list = serializeMap.get(clazz);
         var ret = new HashMap<>();
         try {
-            for (Pair<Class<?>, String> s : list) {
-                ret.put(s.getValue(), clazz.getMethod("get" + s.getValue()).invoke(child));
+            if (clazz.equals(Path.class)) {
+                Path path = (Path) child;
+                var arr = new ArrayList<ArrayList<Double>>();
+                for (PathElement element : path.getElements()) {
+                    if (element instanceof MoveTo) {
+                        var v = (MoveTo) element;
+                        var a = new ArrayList<Double>();
+                        a.add(v.getX());
+                        a.add(v.getY());
+                        arr.add(a);
+                    } else if (element instanceof LineTo) {
+                        var v = (LineTo) element;
+                        var a = new ArrayList<Double>();
+                        a.add(v.getX());
+                        a.add(v.getY());
+                        arr.add(a);
+                    }
+                }
+                ret.put("Elements", arr);
+            } else {
+                for (Pair<Class<?>, String> s : list) {
+                    ret.put(s.getValue(), clazz.getMethod("get" + s.getValue()).invoke(child));
+                }
             }
             ret.putAll(serializeFilled((Paint) clazz.getMethod("getFill").invoke(child), (Paint) clazz.getMethod("getStroke").invoke(child), (double) clazz.getMethod("getStrokeWidth").invoke(child)));
         } catch (Exception e) {
@@ -108,10 +130,24 @@ public class Serializer {
         Node ret = null;
         try {
             Class<? extends Node> clazz = (Class<? extends Node>) Class.forName(clazzStr);
-            var list = serializeMap.get(clazz);
-            ret = clazz.getConstructor().newInstance();
-            for (Pair<Class<?>, String> s : list) {
-                clazz.getMethod("set" + s.getValue(), s.getKey()).invoke(ret, map.get(s.getValue()));
+            if (clazz.equals(Path.class)) {
+                Path path = new Path();
+                var arr = (ArrayList<ArrayList<Double>>) map.get("Elements");
+                for (int i = 0; i < arr.size(); i++) {
+                    var pair = arr.get(i);
+                    if (i == 0) {
+                        path.getElements().add(new MoveTo(pair.get(0), pair.get(1)));
+                    } else {
+                        path.getElements().add(new LineTo(pair.get(0), pair.get(1)));
+                    }
+                }
+                ret = path;
+            } else {
+                var list = serializeMap.get(clazz);
+                ret = clazz.getConstructor().newInstance();
+                for (Pair<Class<?>, String> s : list) {
+                    clazz.getMethod("set" + s.getValue(), s.getKey()).invoke(ret, map.get(s.getValue()));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,27 +159,29 @@ public class Serializer {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("保存");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("TXT","*.txt")
+                new FileChooser.ExtensionFilter("TXT", "*.txt")
         );
         File file = fileChooser.showSaveDialog(controller.cPane.getScene().getWindow());
 
         if (file != null) {
             serialize(file);
-            file=null;
-            fileChooser=new FileChooser();
         }
     }
 
     public static void serialize(File file) {
         try (PrintWriter pw = new PrintWriter(file)) {
-            var res = new ArrayList<>();
-            for (Node child : controller.cPane.getChildren()) {
-                res.add(serializeNode(child));
-            }
-            pw.println(gson.toJson(res));
+            pw.println(serialize(true));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String serialize(boolean nil) {
+        var res = new ArrayList<>();
+        for (Node child : controller.cPane.getChildren()) {
+            res.add(serializeNode(child));
+        }
+        return gson.toJson(res);
     }
 
     public static void deserialize() {
@@ -152,18 +190,24 @@ public class Serializer {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.txt"));
         File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
         if (file != null) {
-            deserialize(file);
-            file=null;
-            fileChooser=new FileChooser();
+            deserialize(file, null);
         }
     }
 
-    public static void deserialize(File file) {
-        System.out.println("deserialize");
+    public static void deserialize(File file, String str) {
         var children = controller.cPane.getChildren();
         children.clear();
-        try (var sc = new BufferedReader(new FileReader(file))) {
-            String r = sc.lines().collect(Collectors.joining());
+        String r = "";
+        if (file != null && str == null) {
+            try {
+                var sc = new BufferedReader(new FileReader(file));
+                r = sc.lines().collect(Collectors.joining());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (str != null)
+            r = str;
+        try {
             var arr = gson.fromJson(r, ArrayList.class);
             for (Object o : arr) {
                 var map = (Map<?, ?>) o;
@@ -179,7 +223,7 @@ public class Serializer {
                     }
                 }
             }
-                NewTool.push();
+            NewTool.push();
         } catch (Exception e) {
             e.printStackTrace();
         }
