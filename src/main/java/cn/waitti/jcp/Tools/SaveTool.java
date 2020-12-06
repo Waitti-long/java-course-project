@@ -25,7 +25,7 @@ public class SaveTool implements EnabledTool{
 
     public void FileSave(){
         Stage stage=(Stage) pane.getScene().getWindow();
-        fileChooser.setTitle("保存图片");
+        fileChooser.setTitle("Save Picture");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("PNG","*.png"),
                 new FileChooser.ExtensionFilter("JPG","*.jpg")
