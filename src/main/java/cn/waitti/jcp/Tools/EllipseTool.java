@@ -44,8 +44,6 @@ public class EllipseTool implements EnabledTool {
                 ellipse.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
             ellipse.setFill(null);
         }
-        ellipse.setCenterX(x1);
-        ellipse.setCenterY(y1);
         ellipse.setOnMouseDragged(mouseDragged());
         ellipse.setOnMousePressed(mousePressed());
         ellipse.setOnMouseDragReleased(mouseDragReleased());
@@ -57,6 +55,8 @@ public class EllipseTool implements EnabledTool {
         y2 = mouseEvent.getY();
         width = x2 - x1;
         height = y2 - y1;
+        ellipse.setCenterX((x1+x2)/2.0);
+        ellipse.setCenterY((y1+y2)/2.0);
         if (width < 0) {
             width = -width;
             x1 = x1 - width;

@@ -115,9 +115,9 @@ public class TextTool implements EnabledTool {
                     p.setFont(Font.font(p.getFont().getFamily(), FontPosture.ITALIC, p.getFont().getSize()));
                 else if (boldCheck.isSelected() && italicCheck.isSelected())
                     p.setFont(Font.font(p.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, p.getFont().getSize()));
+                Revocation.push();
+                NewTool.push();
             }
-            Revocation.push();
-            NewTool.push();
         };
     }
 

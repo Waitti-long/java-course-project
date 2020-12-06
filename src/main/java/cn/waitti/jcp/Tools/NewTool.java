@@ -29,7 +29,8 @@ public class NewTool implements EnabledTool{
             alert.setHeaderText("You haven't saved it before,do you want to save it?");
             ButtonType buttonTypeYes = new ButtonType("Yes");
             ButtonType buttonTypeNo = new ButtonType("No");
-            alert.getButtonTypes().setAll(buttonTypeYes,buttonTypeNo);
+            ButtonType buttonTypeCancel=new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(buttonTypeYes,buttonTypeNo,buttonTypeCancel);
             Optional<ButtonType> result=alert.showAndWait();
             if(result.get()==buttonTypeYes){
                 Serializer.serialize();
@@ -40,6 +41,7 @@ public class NewTool implements EnabledTool{
                 Revocation.popOut();
                 Revocation.push();
             }
+            else{}
         }
         //为空时不提示保存
         else{
