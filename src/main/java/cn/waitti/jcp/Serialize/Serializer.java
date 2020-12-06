@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
@@ -42,6 +43,7 @@ public class Serializer {
             serializeMap.put(node, list);
         }
         node2Tool.put(Path.class, PenTool.class);
+        node2Tool.put(Text.class, TextTool.class);
     }
 
     public static void init(Controller controller) {
@@ -89,7 +91,7 @@ public class Serializer {
         }
     }
 
-    // TODO Pane.class
+
     private static Map<Object, Object> serializeNode(Node child) {
         var clazz = child.getClass();
         var list = serializeMap.get(clazz);
@@ -114,6 +116,15 @@ public class Serializer {
                     }
                 }
                 ret.put("Elements", arr);
+            } else if (clazz.equals(Text.class)) {
+                Text text = (Text) child;
+                ret.putAll(Map.of(
+                        "FontName", text.getFont().getName(),
+                        "FontSize", text.getFont().getSize(),
+                        "Text", text.getText(),
+                        "X", text.getX(),
+                        "Y", text.getY()
+                ));
             } else {
                 for (Pair<Class<?>, String> s : list) {
                     ret.put(s.getValue(), clazz.getMethod("get" + s.getValue()).invoke(child));
@@ -142,6 +153,13 @@ public class Serializer {
                     }
                 }
                 ret = path;
+            } else if (clazz.equals(Text.class)) {
+              Text text = new Text();
+              text.setFont(Font.font((String)map.get("FontName"), (double)map.get("FontSize")));
+              text.setText((String)map.get("Text"));
+              text.setX((double)map.get("X"));
+              text.setY((double)map.get("Y"));
+              ret = text;
             } else {
                 var list = serializeMap.get(clazz);
                 ret = clazz.getConstructor().newInstance();

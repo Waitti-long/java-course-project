@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SerializeConfigure(node = Text.class, serializeStrings = {"Text", "Font", "Size"}, serializeClasses = {String.class, String.class, double.class})
 public class TextTool implements EnabledTool {
     public Text text = new Text();
     public Pane pane;
@@ -72,13 +71,14 @@ public class TextTool implements EnabledTool {
             pane.getChildren().add(text);
             textList.add(text);
             text = new Text();
+            Revocation.push();
+            NewTool.push();
         }
     }
 
     @Override
     public void end(MouseEvent event) {
-        Revocation.push();
-        NewTool.push();
+
     }
 
     @Override
