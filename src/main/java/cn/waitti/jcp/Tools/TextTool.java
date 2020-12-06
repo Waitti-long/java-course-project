@@ -70,13 +70,14 @@ public class TextTool implements EnabledTool {
             pane.getChildren().add(text);
             textList.add(text);
             text = new Text();
+            Revocation.push();
+            NewTool.push();
         }
     }
 
     @Override
     public void end(MouseEvent event) {
-            Revocation.push();
-            NewTool.push();
+
     }
 
     @Override
@@ -113,9 +114,9 @@ public class TextTool implements EnabledTool {
                     p.setFont(Font.font(p.getFont().getFamily(), FontPosture.ITALIC, p.getFont().getSize()));
                 else if (boldCheck.isSelected() && italicCheck.isSelected())
                     p.setFont(Font.font(p.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, p.getFont().getSize()));
+                Revocation.push();
+                NewTool.push();
             }
-            Revocation.push();
-            NewTool.push();
         };
     }
 

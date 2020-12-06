@@ -67,9 +67,10 @@ public class LineTool implements EnabledTool {
                     p.setStrokeWidth(1);
                 else
                     p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
+                Revocation.push();
+                NewTool.push();
             }
-            Revocation.push();
-            NewTool.push();
+
         };
     }
 
