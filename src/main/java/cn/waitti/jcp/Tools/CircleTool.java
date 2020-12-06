@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Serialize.SerializeConfigure;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -8,10 +9,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@SerializeConfigure(node = Circle.class, serializeClasses = {double.class, double.class, double.class}, serializeStrings = {"CenterX", "CenterY", "Radius"})
 public class CircleTool implements EnabledTool {
     Circle circle = new Circle();
     Pane pane;
@@ -68,7 +68,6 @@ public class CircleTool implements EnabledTool {
         return event -> {
             Circle p = (Circle) event.getSource();
             if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
-                System.out.println("?");
                 p.setCenterX(event.getX());
                 p.setCenterY(event.getY());
             }

@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Serialize.SerializeConfigure;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -10,17 +11,19 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+@SerializeConfigure(node = Rectangle.class, serializeStrings = {"X", "Y", "Height", "Width"}, serializeClasses = {double.class, double.class, double.class, double.class})
 public class RecTool implements EnabledTool {
     public Pane pane;
     public double x1, x2, y1, y2, width, height;
     public ColorPicker colorPicker;
     public ComboBox fillBox;
     public ComboBox sizeBox;
-    RecTool(Pane cPane,ColorPicker colorPicker,ComboBox fillBox,ComboBox sizeBox) {
+
+    RecTool(Pane cPane, ColorPicker colorPicker, ComboBox fillBox, ComboBox sizeBox) {
         this.pane = cPane;
-        this.colorPicker=colorPicker;
-        this.fillBox=fillBox;
-        this.sizeBox=sizeBox;
+        this.colorPicker = colorPicker;
+        this.fillBox = fillBox;
+        this.sizeBox = sizeBox;
     }
 
     Rectangle rectangle = new Rectangle();
@@ -31,13 +34,12 @@ public class RecTool implements EnabledTool {
     public void start(MouseEvent mouseEvent) {
         x1 = mouseEvent.getX();
         y1 = mouseEvent.getY();
-        if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
+        if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
             rectangle.setFill(colorPicker.getValue());
             rectangle.setStroke(null);
-        }
-        else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
+        } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
             rectangle.setStroke(colorPicker.getValue());
-            if(sizeBox.getValue()==null)
+            if (sizeBox.getValue() == null)
                 rectangle.setStrokeWidth(1);
             else
                 rectangle.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
@@ -78,7 +80,7 @@ public class RecTool implements EnabledTool {
     public EventHandler<? super MouseEvent> mouseDragged() {
         return event -> {
             Rectangle p = (Rectangle) event.getSource();
-            if(pane.contains(event.getX(),event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
+            if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
                 p.setX(event.getX());
                 p.setY(event.getY());
             }
@@ -89,14 +91,13 @@ public class RecTool implements EnabledTool {
     public EventHandler<? super MouseEvent> mousePressed() {
         return event -> {
             Rectangle p = (Rectangle) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
-                if(fillBox.getValue()!=null && fillBox.getValue().toString().equals("Fill")){
+            if (ToolPicker.getCurrentTool() instanceof ModifyTool) {
+                if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
                     p.setFill(colorPicker.getValue());
                     p.setStroke(null);
-                }
-                else if(fillBox.getValue()==null||fillBox.getValue().toString().equals("Stroke")) {
+                } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
                     p.setStroke(colorPicker.getValue());
-                    if(sizeBox.getValue()==null)
+                    if (sizeBox.getValue() == null)
                         p.setStrokeWidth(1);
                     else
                         p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));

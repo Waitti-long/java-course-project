@@ -2,9 +2,7 @@ package cn.waitti.jcp;
 
 import cn.waitti.jcp.Serialize.Serializer;
 import cn.waitti.jcp.Tools.*;
-import com.sun.javafx.fxml.FXMLLoaderHelper;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;

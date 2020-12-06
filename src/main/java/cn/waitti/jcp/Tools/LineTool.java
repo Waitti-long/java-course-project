@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Serialize.SerializeConfigure;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -10,6 +11,7 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.List;
 
+@SerializeConfigure(node = Line.class, serializeStrings = {"StartX", "StartY", "EndX", "EndY"}, serializeClasses = {double.class, double.class, double.class, double.class})
 public class LineTool implements EnabledTool {
     Line line = new Line();
     Pane pane;
@@ -19,11 +21,11 @@ public class LineTool implements EnabledTool {
     double x1, x2, y1, y2;
     List<Line> lineList = new ArrayList<>();
 
-    LineTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
+    LineTool(Pane pane, ColorPicker colorPicker, ComboBox fillBox, ComboBox sizeBox) {
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
         this.pane = pane;
-        this.sizeBox=sizeBox;
+        this.sizeBox = sizeBox;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class LineTool implements EnabledTool {
         line.setStartX(mouseEvent.getX());
         line.setStartY(mouseEvent.getY());
         line.setStroke(colorPicker.getValue());
-        if(sizeBox.getValue()==null)
+        if (sizeBox.getValue() == null)
             line.setStrokeWidth(1);
         else
             line.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
@@ -44,7 +46,7 @@ public class LineTool implements EnabledTool {
     public EventHandler<? super MouseEvent> mouseDragged() {
         return event -> {
             Line p = (Line) event.getSource();
-            if (pane.contains(event.getX(), event.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
+            if (pane.contains(event.getX(), event.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
                 x1 = p.getStartX();
                 y1 = p.getStartY();
                 x2 = p.getEndX();
@@ -60,10 +62,10 @@ public class LineTool implements EnabledTool {
     @Override
     public EventHandler<? super MouseEvent> mousePressed() {
         return event -> {
-            Line p=(Line) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool){
+            Line p = (Line) event.getSource();
+            if (ToolPicker.getCurrentTool() instanceof ModifyTool) {
                 p.setStroke(colorPicker.getValue());
-                if(sizeBox.getValue()==null)
+                if (sizeBox.getValue() == null)
                     p.setStrokeWidth(1);
                 else
                     p.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));

@@ -1,5 +1,6 @@
 package cn.waitti.jcp.Tools;
 
+import cn.waitti.jcp.Serialize.SerializeConfigure;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -10,6 +11,7 @@ import javafx.scene.shape.Ellipse;
 import java.util.ArrayList;
 import java.util.List;
 
+@SerializeConfigure(node = Ellipse.class, serializeStrings = {"CenterX", "CenterY", "RadiusX", "RadiusY"}, serializeClasses = {double.class, double.class, double.class, double.class})
 public class EllipseTool implements EnabledTool {
     public Pane pane;
     public double x1, x2, y1, y2, width, height;
@@ -17,11 +19,11 @@ public class EllipseTool implements EnabledTool {
     public ComboBox fillBox;
     public ComboBox sizeBox;
 
-    EllipseTool(Pane cPane, ColorPicker colorPicker, ComboBox fillBox,ComboBox sizeBox) {
+    EllipseTool(Pane cPane, ColorPicker colorPicker, ComboBox fillBox, ComboBox sizeBox) {
         this.pane = cPane;
         this.colorPicker = colorPicker;
         this.fillBox = fillBox;
-        this.sizeBox=sizeBox;
+        this.sizeBox = sizeBox;
     }
 
     Ellipse ellipse = new Ellipse();
@@ -36,7 +38,7 @@ public class EllipseTool implements EnabledTool {
             ellipse.setStroke(null);
         } else if (fillBox.getValue() == null || fillBox.getValue().toString().equals("Stroke")) {
             ellipse.setStroke(colorPicker.getValue());
-            if(sizeBox.getValue()==null)
+            if (sizeBox.getValue() == null)
                 ellipse.setStrokeWidth(1);
             else
                 ellipse.setStrokeWidth(Double.parseDouble(sizeBox.getValue().toString()));
@@ -76,7 +78,7 @@ public class EllipseTool implements EnabledTool {
     public EventHandler<? super MouseEvent> mouseDragged() {
         return e -> {
             Ellipse el = (Ellipse) e.getSource();
-            if (pane.contains(e.getX(), e.getY())&& ToolPicker.getCurrentTool() instanceof MouseTool) {
+            if (pane.contains(e.getX(), e.getY()) && ToolPicker.getCurrentTool() instanceof MouseTool) {
                 el.setCenterX(e.getX());
                 el.setCenterY(e.getY());
             }
@@ -87,7 +89,7 @@ public class EllipseTool implements EnabledTool {
     public EventHandler<? super MouseEvent> mousePressed() {
         return event -> {
             Ellipse el = (Ellipse) event.getSource();
-            if(ToolPicker.getCurrentTool() instanceof ModifyTool) {
+            if (ToolPicker.getCurrentTool() instanceof ModifyTool) {
                 if (fillBox.getValue() != null && fillBox.getValue().toString().equals("Fill")) {
                     el.setFill(colorPicker.getValue());
                     el.setStroke(null);
