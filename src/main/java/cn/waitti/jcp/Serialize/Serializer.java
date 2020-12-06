@@ -174,7 +174,7 @@ public class Serializer {
 
     public static void serialize() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("保存");
+        fileChooser.setTitle("Save");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("TXT", "*.txt")
         );
@@ -203,7 +203,7 @@ public class Serializer {
 
     public static void deserialize() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("打开");
+        fileChooser.setTitle("Open");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.txt"));
         File file = fileChooser.showOpenDialog(controller.cPane.getScene().getWindow());
         if (file != null) {
