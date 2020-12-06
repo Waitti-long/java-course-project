@@ -20,7 +20,6 @@ public class Revocation {
     }
 
     public static void push() {
-        System.out.println("push");
         try {
             stack.push(Serializer.serialize(true));
         } catch (Exception e) {
