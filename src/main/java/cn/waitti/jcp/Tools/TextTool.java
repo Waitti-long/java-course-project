@@ -71,6 +71,8 @@ public class TextTool implements EnabledTool {
             pane.getChildren().add(text);
             textList.add(text);
             text = new Text();
+            Revocation.push();
+            NewTool.push();
         }
     }
 
